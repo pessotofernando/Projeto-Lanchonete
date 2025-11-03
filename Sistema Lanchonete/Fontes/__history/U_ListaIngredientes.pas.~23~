@@ -1,0 +1,149 @@
+unit U_ListaIngredientes;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids, DBGrids, u_Frame_Cadastro01, StdCtrls,DB,
+  Menus, ExtCtrls, ComCtrls,AppEvnts, u_Frame_impressao;
+
+type
+  TFr_ListaIngredientes = class(TForm)
+    DBGrid1: TDBGrid;
+    DS_INGREDIENTES_SP_CON: TDataSource;
+    Frame_Impressao1: TFrame_Impressao;
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure BOXExit(Sender: TObject);
+    procedure ApplicationEvents1Message(var Msg: tagMSG;
+      var Handled: Boolean);
+    procedure Frame_Impressao1BntLimpaClick(Sender: TObject);
+    procedure Frame_Impressao1BntFecharClick(Sender: TObject);
+    procedure Frame_Impressao1BntGravaClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+
+     procedure INGREDIENTES_SP_MNT(man:string);
+     procedure INGREDIENTES_SP_CON;
+    { Public declarations }
+  end;
+
+var
+  Fr_ListaIngredientes   : TFr_ListaIngredientes;
+  var_fr_tecla : string;
+implementation
+
+uses u_module,u_valida,u_rot_busca,u_lanches;
+
+{$R *.dfm}
+
+
+procedure TFr_ListaIngredientes.INGREDIENTES_SP_CON;
+begin
+
+   with Module.INGREDIENTES_SP_CON do
+   begin
+      close;
+      parambyname('@INP_CODIGO').asinteger := 0;
+      execproc;open;first;
+   end;
+
+end;
+
+procedure TFr_ListaIngredientes.INGREDIENTES_SP_MNT(man:string);
+begin
+
+   if man = 'M' then
+   begin
+      with Module.LANCHEINGR_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS' ).asstring  := 'MNT';
+         parambyname('@INP_LANCHE' ).asinteger :=  strtoint(var_codigo);
+         parambyname('@INP_ITEM'   ).asinteger :=  0;
+         parambyname('@INP_CODING' ).asinteger :=  MODULE.INGREDIENTES_SP_CON.FieldByName('ING_CODIGO').AsInteger;
+         execproc;
+      end;
+   end;
+
+end;
+
+
+procedure TFr_ListaIngredientes.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if ((var_fr_tecla = '27') and (key = 27)) then close;
+
+   var_fr_tecla :=  inttostr(key);
+
+   if key = 13   then SelectNext(activecontrol,true,true);
+   if ((key = 38) and (activecontrol <> DBGrid1)) then SelectNext(activecontrol,false,true);
+
+   if key = Vk_f5 then Frame_Impressao1BntGravaClick(Frame_Impressao1.BntGrava);
+   if key = Vk_F12 then close;
+end;
+
+procedure TFr_ListaIngredientes.Frame_Impressao1BntFecharClick(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TFr_ListaIngredientes.Frame_Impressao1BntGravaClick(Sender: TObject);
+begin
+   INGREDIENTES_SP_MNT('M');
+end;
+
+procedure TFr_ListaIngredientes.Frame_Impressao1BntLimpaClick(Sender: TObject);
+begin
+   INGREDIENTES_SP_CON;
+end;
+
+
+procedure TFr_ListaIngredientes.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   Module.INGREDIENTES_SP_CON.close;
+   Action := caFree;
+end;
+
+procedure TFr_ListaIngredientes.FormCreate(Sender: TObject);
+begin
+   MODULE.INGREDIENTES_SP_CON.close;
+   INGREDIENTES_SP_CON;
+end;
+
+procedure TFr_ListaIngredientes.BOXExit(Sender: TObject);
+begin
+   INGREDIENTES_SP_MNT('M');
+   INGREDIENTES_SP_CON;
+end;
+
+procedure TFr_ListaIngredientes.ApplicationEvents1Message(var Msg: tagMSG;var Handled: Boolean);
+var
+  i : Smallint;
+begin
+   case Msg.Message of WM_KEYDOWN:
+   begin
+      if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+    end;
+  end;
+
+  // rolagem do scroll do mouse no DBGrid
+  if Msg.message = WM_MOUSEWHEEL then
+  begin
+     Msg.message := WM_KEYDOWN;
+     Msg.lParam := 0;
+
+     i := HiWord(Msg.wParam);
+
+     if i > 0 then Msg.wParam := VK_UP
+     else
+     Msg.wParam := VK_DOWN;
+     Handled := False;
+  end;
+
+end;
+
+end.

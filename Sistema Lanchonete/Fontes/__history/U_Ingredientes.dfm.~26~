@@ -1,0 +1,215 @@
+object Fr_Ingredientes: TFr_Ingredientes
+  Left = 277
+  Top = 198
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
+  Caption = 'Cadastro de Ingredientes'
+  ClientHeight = 424
+  ClientWidth = 473
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  Position = poDesktopCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  TextHeight = 13
+  inline Frame_Cadastro011: TFrame_Cadastro01
+    Left = 0
+    Top = 0
+    Width = 473
+    Height = 49
+    Align = alTop
+    TabOrder = 4
+    ExplicitWidth = 469
+    ExplicitHeight = 49
+    inherited Panel1: TPanel
+      Width = 473
+      Height = 49
+      ExplicitWidth = 469
+      ExplicitHeight = 49
+      inherited BntAltera: TSpeedButton
+        Left = 80
+        Width = 45
+        OnClick = Frame_Cadastro011BntAlteraClick
+        ExplicitLeft = 80
+        ExplicitWidth = 45
+      end
+      inherited BntNovo: TSpeedButton
+        Width = 45
+        OnClick = Frame_Cadastro011BntNovoClick
+        ExplicitWidth = 45
+      end
+      inherited BntGrava: TSpeedButton
+        Left = 40
+        Width = 45
+        OnClick = Frame_Cadastro011BntGravaClick
+        ExplicitLeft = 40
+        ExplicitWidth = 45
+      end
+      inherited BntExcluir: TSpeedButton
+        Left = 119
+        Width = 45
+        OnClick = Frame_Cadastro011BntExcluirClick
+        ExplicitLeft = 119
+        ExplicitWidth = 45
+      end
+      inherited BntAnterior: TSpeedButton
+        Left = 181
+        Width = 45
+        OnClick = Frame_Cadastro011BntAnteriorClick
+        ExplicitLeft = 181
+        ExplicitWidth = 45
+      end
+      inherited BntProximo: TSpeedButton
+        Left = 315
+        Width = 45
+        OnClick = Frame_Cadastro011BntProximoClick
+        ExplicitLeft = 315
+        ExplicitWidth = 45
+      end
+      inherited BntLimpa: TSpeedButton
+        Left = 374
+        Width = 45
+        OnClick = Frame_Cadastro011BntLimpaClick
+        ExplicitLeft = 374
+        ExplicitWidth = 45
+      end
+      inherited BntFechar: TSpeedButton
+        Left = 425
+        Top = 2
+        Width = 45
+        OnClick = Frame_Cadastro011BntFecharClick
+        ExplicitLeft = 425
+        ExplicitTop = 2
+        ExplicitWidth = 45
+      end
+      inherited SpeedButton9: TSpeedButton
+        Left = 361
+        Width = 12
+        ExplicitLeft = 361
+        ExplicitWidth = 12
+      end
+      inherited Codigo: TEdit
+        Left = 232
+        Height = 20
+        OnKeyDown = Frame_Cadastro011CodigoKeyDown
+        ExplicitLeft = 232
+        ExplicitHeight = 20
+      end
+      inherited Panel2: TPanel
+        Width = 465
+        ExplicitWidth = 465
+      end
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 3
+    Top = 55
+    Width = 466
+    Height = 310
+    DataSource = DS_INGREDIENTES_SP_CON
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    TabOrder = 3
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnCellClick = DBGrid1CellClick
+    OnKeyUp = DBGrid1KeyUp
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ING_CODIGO'
+        Title.Caption = 'Codigo'
+        Width = 44
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ING_DESCRICAO'
+        Title.Caption = 'Descri'#231#227'o'
+        Width = 312
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ING_VALOR'
+        Title.Caption = 'Valor'
+        Width = 85
+        Visible = True
+      end>
+  end
+  object Codigo: TEdit
+    Left = 3
+    Top = 371
+    Width = 62
+    Height = 19
+    CharCase = ecUpperCase
+    Ctl3D = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    MaxLength = 7
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 0
+    OnExit = CodigoExit
+  end
+  object descri: TEdit
+    Left = 3
+    Top = 396
+    Width = 357
+    Height = 19
+    CharCase = ecUpperCase
+    Ctl3D = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    MaxLength = 70
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 1
+    OnExit = descriExit
+  end
+  object valor: TEdit
+    Left = 366
+    Top = 396
+    Width = 105
+    Height = 19
+    BiDiMode = bdRightToLeft
+    CharCase = ecUpperCase
+    Ctl3D = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    MaxLength = 70
+    ParentBiDiMode = False
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 2
+    OnExit = valorExit
+  end
+  object DS_INGREDIENTES_SP_CON: TDataSource
+    AutoEdit = False
+    DataSet = MODULE.INGREDIENTES_SP_CON
+    Left = 143
+    Top = 161
+  end
+  object ApplicationEvents1: TApplicationEvents
+    OnMessage = ApplicationEvents1Message
+    Left = 287
+    Top = 160
+  end
+end

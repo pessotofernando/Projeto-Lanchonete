@@ -1,0 +1,798 @@
+unit UCadPedido;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, u_Frame_Cadastro01,
+  System.ImageList, Vcl.ImgList, Vcl.Buttons, Vcl.StdCtrls, Vcl.Mask, Data.DB,
+  Vcl.Grids, Vcl.DBGrids, Vcl.Menus, Vcl.AppEvnts, REST.Types, REST.Client,
+  Data.Bind.Components, Data.Bind.ObjectScope,System.JSON;
+
+type
+  TFRCadPedido = class(TForm)
+    Frame_Cadastro011: TFrame_Cadastro01;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    ImageList1: TImageList;
+    Panel3: TPanel;
+    SpeedButton1: TSpeedButton;
+    GroupBox2: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Codigo: TEdit;
+    Cliente: TEdit;
+    Nome: TEdit;
+    DataCad: TMaskEdit;
+    GroupBox1: TGroupBox;
+    GroupBox3: TGroupBox;
+    DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    GroupBox4: TGroupBox;
+    DBGrid3: TDBGrid;
+    Panel4: TPanel;
+    GroupBox5: TGroupBox;
+    ValorTotal: TEdit;
+    desconto: TEdit;
+    Desconto1: TLabel;
+    Label3: TLabel;
+    PopupMenu1: TPopupMenu;
+    IncluirLanches1: TMenuItem;
+    ExcluirLanches1: TMenuItem;
+    PopupMenu2: TPopupMenu;
+    InclirIngredientes1: TMenuItem;
+    ExcluirIngredientes1: TMenuItem;
+    PopupMenu3: TPopupMenu;
+    IncluirAdicional1: TMenuItem;
+    ExcluirAdicional1: TMenuItem;
+    SpeedButton2: TSpeedButton;
+    ApplicationEvents1: TApplicationEvents;
+    DS_PEDLANCHE_SP_CON: TDataSource;
+    DS_PEDLANCHEITENS_SP_CON: TDataSource;
+    DS_PEDADICIONAL_SP_CON: TDataSource;
+    RESTResponse1: TRESTResponse;
+    RESTClient1: TRESTClient;
+    RESTRequest1: TRESTRequest;
+    GroupBox6: TGroupBox;
+    Dolar: TEdit;
+    SpeedButton3: TSpeedButton;
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure Frame_Cadastro011BntFecharClick(Sender: TObject);
+    procedure Frame_Cadastro011BntNovoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure ClienteExit(Sender: TObject);
+    procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Frame_Cadastro011BntLimpaClick(Sender: TObject);
+    procedure Frame_Cadastro011BntGravaClick(Sender: TObject);
+    procedure Frame_Cadastro011BntExcluirClick(Sender: TObject);
+    procedure CodigoExit(Sender: TObject);
+    procedure Frame_Cadastro011BntAnteriorClick(Sender: TObject);
+    procedure Frame_Cadastro011BntProximoClick(Sender: TObject);
+    procedure Frame_Cadastro011CodigoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure IncluirLanches1Click(Sender: TObject);
+    procedure ExcluirLanches1Click(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure DBGrid1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ExcluirIngredientes1Click(Sender: TObject);
+    procedure InclirIngredientes1Click(Sender: TObject);
+    procedure IncluirAdicional1Click(Sender: TObject);
+    procedure ExcluirAdicional1Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure PEDIDO_LIMPA(tip:string);
+    procedure PEDIDO_SP_MNT(man:string);
+    procedure PEDIDO_LER(tip:string);
+    PROCEDURE PEDLANCHE_SP_CON;
+
+    PROCEDURE PEDLANCHEITENS_SP_CON;
+
+    PROCEDURE PEDADICIONAL_SP_CON;
+
+    procedure CHAMARAPI;
+
+  end;
+
+var
+  FRCadPedido: TFRCadPedido;
+  var_clientecod : string;
+  var_pedido     : string;
+  var_itempedido : string;
+implementation
+
+{$R *.dfm}
+
+uses U_CadCliente,u_valida, U_Pes_Cliente,u_rot_busca, U_MODULE, U_IncluiLanche,
+  U_ListaIngrPedido, U_ListaIngrPedAdi, U_Pes_Pedido;
+
+procedure TFRCadPedido.ApplicationEvents1Message(var Msg: tagMSG;
+  var Handled: Boolean);
+begin
+   case Msg.Message of WM_KEYDOWN:
+    begin
+       if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+    end;
+    end;
+end;
+
+procedure TFRCadPedido.ClienteExit(Sender: TObject);
+begin
+   if var_fr_tecla <> '13' then exit;
+
+   if cliente.Text = '' then SpeedButton2Click(SpeedButton2);
+
+   if cliente.Text = '' then
+   begin
+      activecontrol := cliente;
+      exit;
+   end;
+
+   if not valida_campo(cliente.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := cliente;
+      exit;
+   end;
+
+   if not busca_cliente(cliente.Text) then
+   begin
+      showmessage('Operação Cancelada. Cliente não Cadastrado.');
+      activecontrol := cliente;
+      exit;
+   end;
+   nome.text   := rot_descri;
+
+   PEDIDO_SP_MNT('M');
+
+end;
+
+procedure TFRCadPedido.CodigoExit(Sender: TObject);
+begin
+   if var_fr_tecla <> '13' then exit;
+
+   if Codigo.Text = '' then SpeedButton3Click(SpeedButton3);
+
+   if Codigo.Text = '' then
+   begin
+      activecontrol := Codigo;
+      exit;
+   end;
+
+
+   if not valida_campo(Codigo.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := Codigo;
+      exit;
+   end;
+
+   PEDIDO_SP_MNT('C');
+   PEDIDO_LER('CON');
+
+
+   PEDLANCHE_SP_CON;
+   PEDLANCHEITENS_SP_CON;
+   PEDADICIONAL_SP_CON;
+
+   CHAMARAPI;
+
+end;
+
+procedure TFRCadPedido.DBGrid1CellClick(Column: TColumn);
+begin
+   PEDLANCHEITENS_SP_CON;
+end;
+
+procedure TFRCadPedido.DBGrid1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   PEDLANCHEITENS_SP_CON;
+end;
+
+procedure TFRCadPedido.ExcluirAdicional1Click(Sender: TObject);
+begin
+   If Application.MessageBox('Confirma Exclusão do Item Adicional do Pedido?','Lanchonete',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+
+      if not Module.PEDADICIONAL_SP_CON.active then exit;
+
+      with Module.PEDADICIONAL_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'EXC';
+         parambyname('@INP_PEDIDO').asinteger := strtoint(codigo.text);
+         parambyname('@INP_ITEM'  ).asinteger := Module.PEDADICIONAL_SP_CON.fieldbyname('PEA_ITEM').asinteger;
+         execproc;
+      end;
+
+      PEDIDO_SP_MNT('M');
+      PEDIDO_SP_MNT('C');
+      PEDIDO_LER('CON');
+
+      PEDLANCHE_SP_CON;
+      PEDLANCHEITENS_SP_CON;
+      PEDADICIONAL_SP_CON;
+
+      CHAMARAPI;
+   end;
+end;
+
+procedure TFRCadPedido.ExcluirIngredientes1Click(Sender: TObject);
+var
+   var_lancheitem   : integer;
+   var_itemingre    : integer;
+
+begin
+   If Application.MessageBox('Confirma Exclusão do ingrediente do Lanche?','Lanchonete',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+
+      if not module.PEDLANCHEITENS_SP_CON.active then exit;
+
+      var_lancheitem  := Module.PEDLANCHE_SP_CON.fieldbyname('PED_ITEM').asinteger;
+      var_itemingre   := module.PEDLANCHEITENS_SP_CON.fieldbyname('ING_CODIGO').asinteger;
+
+      with Module.PEDLANCHEITENS_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring   := 'EXC';
+         parambyname('@INP_PEDIDO').asinteger  := strtoint(codigo.text);
+         parambyname('@INP_ITEM'  ).asinteger  := Module.PEDLANCHE_SP_CON.fieldbyname('PED_ITEM').asinteger;
+         parambyname('@INP_INGCOD').asinteger  := module.PEDLANCHEITENS_SP_CON.fieldbyname('ING_CODIGO').asinteger;
+         parambyname('@INP_INGITEM').asinteger := module.PEDLANCHEITENS_SP_CON.fieldbyname('ING_ITEM').asinteger;
+         execproc;
+      end;
+
+      PEDIDO_SP_MNT('M');
+      PEDIDO_SP_MNT('C');
+      PEDIDO_LER('CON');
+
+      PEDLANCHE_SP_CON;
+      MODULE.PEDLANCHE_SP_CON.Locate('PED_ITEM',var_lancheitem,[]);
+
+      PEDLANCHEITENS_SP_CON;
+      MODULE.PEDLANCHEITENS_SP_CON.Locate('ING_CODIGO',var_itemingre,[]);
+
+      CHAMARAPI;
+   end;
+end;
+
+procedure TFRCadPedido.ExcluirLanches1Click(Sender: TObject);
+begin
+   If Application.MessageBox('Confirma Exclusão do lanche do Pedido?','Lanchonete',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+
+      if not Module.PEDLANCHE_SP_CON.active then exit;
+
+      with Module.PEDLANCHE_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'EXC';
+         parambyname('@INP_PEDIDO').asinteger := strtoint(codigo.text);
+         parambyname('@INP_ITEM'  ).asinteger := Module.PEDLANCHE_SP_CON.fieldbyname('PED_ITEM').asinteger;
+         execproc;
+      end;
+
+      PEDIDO_SP_MNT('M');
+      PEDIDO_SP_MNT('C');
+      PEDIDO_LER('CON');
+
+      PEDLANCHE_SP_CON;
+      PEDLANCHEITENS_SP_CON;
+      PEDADICIONAL_SP_CON;
+
+      CHAMARAPI;
+   end;
+end;
+
+procedure TFRCadPedido.FormCreate(Sender: TObject);
+begin
+   PEDIDO_LIMPA('TOT');
+
+   activecontrol := codigo;
+end;
+
+procedure TFRCadPedido.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   var_fr_tecla :=  inttostr(key);
+
+   if key = 13 then SelectNext(activecontrol,true,true);
+   if key = 27 then Frame_Cadastro011BntLimpaClick(Frame_Cadastro011.BntLimpa);
+   if key = 38 then SelectNext(activecontrol,false,true);
+
+   if key = Vk_f2 then Frame_Cadastro011BntNovoClick(Frame_Cadastro011.BntNovo);
+   if key = Vk_f5 then Frame_Cadastro011BntGravaClick(Frame_Cadastro011.BntGrava);
+
+   if key = Vk_f3 then Frame_Cadastro011BntExcluirClick(Frame_Cadastro011.BntExcluir);
+
+   if key = Vk_F12 then close;
+end;
+
+procedure TFRCadPedido.Frame_Cadastro011BntAnteriorClick(Sender: TObject);
+begin
+
+   PEDIDO_SP_MNT('ANT');
+   PEDIDO_SP_MNT('C');
+   PEDIDO_LER('CON');
+
+   PEDLANCHE_SP_CON;
+   PEDLANCHEITENS_SP_CON;
+   PEDADICIONAL_SP_CON;
+
+end;
+
+procedure TFRCadPedido.Frame_Cadastro011BntExcluirClick(Sender: TObject);
+begin
+
+   If Application.MessageBox('Confirma Exclusão do Pedido?','Lanchonete',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+      PEDIDO_SP_MNT('E');
+      PEDIDO_LIMPA('TOT');
+
+
+      CHAMARAPI;
+      activecontrol := codigo;
+   end;
+
+end;
+
+procedure TFRCadPedido.Frame_Cadastro011BntFecharClick(Sender: TObject);
+begin
+   close;
+end;
+
+procedure TFRCadPedido.Frame_Cadastro011BntGravaClick(Sender: TObject);
+begin
+   if cliente.Text = '' then exit;
+
+   PEDIDO_SP_MNT('M');
+   PEDIDO_SP_MNT('C');
+   PEDIDO_LER('CON');
+
+   PEDLANCHE_SP_CON;
+   PEDLANCHEITENS_SP_CON;
+   PEDADICIONAL_SP_CON;
+
+   codigo.Enabled := true;
+   activecontrol  := CODIGO;
+
+end;
+
+procedure TFRCadPedido.Frame_Cadastro011BntLimpaClick(Sender: TObject);
+begin
+   PEDIDO_LIMPA('TOT');
+   codigo.Text := '0';
+   activecontrol := codigo;
+end;
+
+procedure TFRCadPedido.Frame_Cadastro011BntNovoClick(Sender: TObject);
+begin
+   PEDIDO_LIMPA('TOT');
+
+   codigo.Text := '0';
+   codigo.Enabled := false;
+   activecontrol := cliente;
+end;
+
+procedure TFRCadPedido.Frame_Cadastro011BntProximoClick(Sender: TObject);
+begin
+   PEDIDO_SP_MNT('PRO');
+   PEDIDO_SP_MNT('C');
+   PEDIDO_LER('CON');
+   PEDLANCHE_SP_CON;
+   PEDLANCHEITENS_SP_CON;
+   PEDADICIONAL_SP_CON;
+end;
+
+procedure TFRCadPedido.Frame_Cadastro011CodigoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+   if key = 13  then
+   begin
+      var_fr_tecla := '';
+
+      IF strtoint(Frame_Cadastro011.Codigo.text) <> 0 then
+      begin
+         if not valida_campo(Frame_Cadastro011.Codigo.text,'C') then
+         begin
+            showmessage('Operação Cancelada. Campo Inválido.');
+            activecontrol := Frame_Cadastro011.Codigo;
+            exit;
+         end;
+
+         codigo.text := Frame_Cadastro011.Codigo.text;
+
+         PEDIDO_SP_MNT('C');
+         PEDIDO_LER('CON');
+
+         PEDLANCHE_SP_CON;
+         PEDLANCHEITENS_SP_CON;
+         PEDADICIONAL_SP_CON;
+
+      end;
+   end;
+end;
+
+procedure TFRCadPedido.InclirIngredientes1Click(Sender: TObject);
+var
+   var_lancheitem   : integer;
+   var_itemingre    : integer;
+begin
+   if not MODULE.PEDLANCHE_SP_CON.active then exit;
+
+   var_pedido      := codigo.Text;
+   var_itempedido  := inttostr(Module.PEDLANCHE_SP_CON.fieldbyname('PED_ITEM').asinteger);
+   var_lancheitem  := Module.PEDLANCHE_SP_CON.fieldbyname('PED_ITEM').asinteger;
+
+   Application.CreateForm(TFr_ListaIngrPedido,Fr_ListaIngrPedido);
+   Fr_ListaIngrPedido.showmodal;
+
+   PEDLANCHE_SP_CON;
+
+   PEDIDO_SP_MNT('M');
+   PEDIDO_SP_MNT('C');
+   PEDIDO_LER('CON');
+
+   PEDLANCHE_SP_CON;
+   MODULE.PEDLANCHE_SP_CON.Locate('PED_ITEM',var_lancheitem,[]);
+
+   PEDLANCHEITENS_SP_CON;
+   PEDADICIONAL_SP_CON;
+
+   CHAMARAPI;
+end;
+
+procedure TFRCadPedido.IncluirAdicional1Click(Sender: TObject);
+var
+   var_lancheitem   : integer;
+   var_itemingre    : integer;
+begin
+   if not MODULE.PEDLANCHE_SP_CON.active then exit;
+
+   var_pedido      := codigo.Text;
+   var_itempedido  := inttostr(Module.PEDLANCHE_SP_CON.fieldbyname('PED_ITEM').asinteger);
+   var_lancheitem  := Module.PEDLANCHE_SP_CON.fieldbyname('PED_ITEM').asinteger;
+
+   Application.CreateForm(TFr_ListaIngrPedAdi,Fr_ListaIngrPedAdi);
+   Fr_ListaIngrPedAdi.showmodal;
+
+   PEDLANCHE_SP_CON;
+
+   PEDIDO_SP_MNT('M');
+   PEDIDO_SP_MNT('C');
+   PEDIDO_LER('CON');
+
+   PEDLANCHE_SP_CON;
+   MODULE.PEDLANCHE_SP_CON.Locate('PED_ITEM',var_lancheitem,[]);
+
+   PEDLANCHEITENS_SP_CON;
+   PEDADICIONAL_SP_CON;
+
+   CHAMARAPI;
+end;
+
+procedure TFRCadPedido.IncluirLanches1Click(Sender: TObject);
+begin
+
+   var_pedido := codigo.Text;
+
+   Application.CreateForm(TFr_IncluiLanche,Fr_IncluiLanche);
+   Fr_IncluiLanche.showmodal;
+
+   PEDLANCHE_SP_CON;
+
+   PEDIDO_SP_MNT('M');
+   PEDIDO_SP_MNT('C');
+   PEDIDO_LER('CON');
+
+   PEDLANCHE_SP_CON;
+   PEDLANCHEITENS_SP_CON;
+   PEDADICIONAL_SP_CON;
+
+
+   CHAMARAPI;
+end;
+
+procedure TFRCadPedido.SpeedButton1Click(Sender: TObject);
+begin
+   var_clientecod := '0';
+
+   Application.CreateForm(TFrCadCliente,FrCadCliente);
+   FrCadCliente.showmodal;
+
+   if (var_clientecod = '')  or  (var_clientecod = '0') then exit;
+
+   cliente.Text := var_clientecod;
+   ClienteExit(cliente);
+end;
+
+procedure TFRCadPedido.SpeedButton2Click(Sender: TObject);
+begin
+   paramentros[1] := '';
+
+   Application.CreateForm(TFr_Pes_Cliente,Fr_Pes_Cliente);
+   Fr_Pes_Cliente.ShowModal;
+
+   if paramentros[1] = '' then
+   begin
+      activecontrol := codigo;
+      exit;
+   end;
+
+   var_fr_tecla:= '13';
+
+   cliente.Text := paramentros[1];
+   clienteExit(cliente);
+end;
+
+procedure TFRCadPedido.SpeedButton3Click(Sender: TObject);
+begin
+   paramentros[1] := '';
+
+   Application.CreateForm(TFr_Pes_Pedido,Fr_Pes_Pedido);
+   Fr_Pes_Pedido.ShowModal;
+
+   if paramentros[1] = '' then
+   begin
+      activecontrol := codigo;
+      exit;
+   end;
+
+   var_fr_tecla:= '13';
+
+   codigo.Text := paramentros[1];
+   CodigoExit(codigo);
+end;
+
+procedure TFRCadPedido.PEDIDO_LIMPA(tip: string);
+begin
+
+   var_fr_tecla := '';
+   codigo.Enabled := false;
+
+   if tip = 'TOT' then
+   begin
+      Codigo.Text := '';
+      Frame_Cadastro011.Codigo.text := '';
+
+      MODULE.PEDLANCHE_SP_CON.CLOSE;
+      MODULE.PEDLANCHEITENS_SP_CON.CLOSE;
+      module.PEDADICIONAL_SP_CON.close;
+   end;
+
+   cliente.Text    := '';
+   nome.Text       := '';
+   desconto.Text   := '0,00';
+   ValorTotal.Text := '0,00';
+   dolar.Text      := '0,00';
+
+
+   codigo.Enabled := true;
+   var_fr_tecla := '27';
+end;
+
+
+
+procedure TFRCadPedido.PEDIDO_SP_MNT(man:string);
+begin
+
+   if man = 'C' then
+   begin
+      with Module.PEDIDO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'CON';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+
+         if parambyname('@OUT_CODERR').asinteger > 0 then
+         begin
+            Application.MessageBox(pchar(parambyname('@OUT_MENERR').asstring),'Lanchonete',16);
+            PEDIDO_LIMPA('TOT');
+            activecontrol := codigo;
+            exit;
+         end;
+      end;
+   end;
+
+
+   if man = 'M' then
+   begin
+      with Module.PEDIDO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS'  ).asstring  := 'MNT';
+         parambyname('@INP_CODIGO'  ).asinteger := strtoint(codigo.text);
+         parambyname('@INP_CODCLI'  ).asinteger := strtoint(cliente.text);
+         execproc;
+
+         codigo.Text      := parambyname('@OUT_CODIGO').asstring;
+         DataCad.EditText := parambyname('@OUT_DATA').asstring;
+         Frame_Cadastro011.Codigo.text := codigo.text;
+
+         PEDIDO_SP_MNT('DES');
+         PEDIDO_SP_MNT('REF');
+
+         CHAMARAPI;
+      end;
+   end;
+
+
+   if man = 'E' then
+   begin
+
+      with Module.PEDIDO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'EXC';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+      end;
+
+   end;
+
+
+   if man = 'PRO' then
+   begin
+
+      with Module.PEDIDO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'PRO';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+
+         codigo.text := inttostr(parambyname('@OUT_CODIGO').asinteger);
+      end;
+
+   end;
+
+
+   if man = 'ANT' then
+   begin
+
+      with Module.PEDIDO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'ANT';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+
+         codigo.text := inttostr(parambyname('@OUT_CODIGO').asinteger);
+      end;
+
+   end;
+
+
+   if man = 'DES' then
+   begin
+
+      with Module.PEDIDO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'DES';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+      end;
+
+   end;
+
+   if man = 'REF' then
+   begin
+
+      with Module.PEDIDO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'REF';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+      end;
+
+   end;
+
+
+
+end;
+
+procedure TFRCadPedido.PEDIDO_LER(tip:string);
+begin
+   if tip = 'CON' then
+   begin
+
+      with Module.PEDIDO_SP_MNT do
+      begin
+         cliente.Text     := parambyname('@OUT_CODCLI'   ).asstring;
+         datacad.text     := parambyname('@OUT_DATA'     ).asstring;
+         desconto.text    := FormatFloat('###,##0.00',parambyname('@OUT_DESCONTO' ).asfloat);
+         ValorTotal.Text  := FormatFloat('###,##0.00',parambyname('@OUT_VALORTOT' ).asfloat);
+
+      end;
+   end;
+
+   Frame_Cadastro011.Codigo.text := codigo.text;
+   busca_cliente(cliente.text);
+   nome.text := Rot_descri
+
+end;
+
+
+PROCEDURE TFRCadPedido.PEDLANCHE_SP_CON;
+begin
+
+   with Module.PEDLANCHE_SP_CON do
+   begin
+      close;
+      parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+      execproc;open;first;
+   end;
+
+end;
+
+
+
+procedure TFRCadPedido.PEDLANCHEITENS_SP_CON;
+begin
+   with Module.PEDLANCHEITENS_SP_CON do
+   begin
+      close;
+      parambyname('@INP_PEDIDO').asinteger := strtoint(codigo.text);
+      parambyname('@INP_ITEM').asinteger := Module.PEDLANCHE_SP_CON.fieldbyname('PED_ITEM').asinteger;
+      execproc;open;first;
+   end;
+end;
+
+
+PROCEDURE TFRCadPedido.PEDADICIONAL_SP_CON;
+begin
+
+   with Module.PEDADICIONAL_SP_CON do
+   begin
+      close;
+      parambyname('@INP_PEDIDO').asinteger := strtoint(codigo.text);
+      execproc;open;first;
+   end;
+
+end;
+
+
+procedure TFRCadPedido.CHAMARAPI;
+var
+  LJsonValue  : TJSONValue;
+  LJsonObject : TJSONObject;
+  Valordolar  : string;
+  var_calculo : Extended;
+
+
+begin
+   RESTRequest1.Execute;
+
+   LJsonValue := RESTRequest1.Response.JSONValue as TJSONObject;
+
+   if LJsonValue is TJSONObject then
+   begin
+      LJsonObject := LJsonValue as TJSONObject;
+
+
+      Valordolar := StringReplace((LJsonObject.GetValue('USDBRL') as TJSONObject).GetValue('bid').Value,'.', ',', [rfReplaceAll, rfIgnoreCase]);
+
+      Valordolar := FormatFloat('0.00', strtofloat(Valordolar));
+
+   end;
+
+   if Valordolar = '' then exit;
+
+   var_calculo := strtofloat(ValorTotal.text) / strtofloat(Valordolar);
+
+   dolar.Text :=  FormatFloat('US$ #,##0.00', var_calculo);
+
+
+end;
+
+
+end.

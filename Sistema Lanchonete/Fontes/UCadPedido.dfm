@@ -1,0 +1,756 @@
+object FRCadPedido: TFRCadPedido
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Cadastro de Pedidos'
+  ClientHeight = 485
+  ClientWidth = 850
+  Color = clBtnFace
+  DefaultMonitor = dmDesktop
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  KeyPreview = True
+  PopupMenu = PopupMenu3
+  Position = poDesktopCenter
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  TextHeight = 15
+  inline Frame_Cadastro011: TFrame_Cadastro01
+    Left = 0
+    Top = 0
+    Width = 850
+    Height = 49
+    Align = alTop
+    TabOrder = 0
+    ExplicitWidth = 846
+    ExplicitHeight = 49
+    inherited Panel1: TPanel
+      Width = 850
+      Height = 49
+      Align = alTop
+      ExplicitWidth = 846
+      ExplicitHeight = 49
+      inherited BntAltera: TSpeedButton
+        Left = 86
+        Width = 45
+        Glyph.Data = {00000000}
+        Visible = False
+        ExplicitLeft = 86
+        ExplicitWidth = 45
+      end
+      inherited BntNovo: TSpeedButton
+        Width = 45
+        OnClick = Frame_Cadastro011BntNovoClick
+        ExplicitWidth = 45
+      end
+      inherited BntGrava: TSpeedButton
+        Left = 43
+        Width = 45
+        OnClick = Frame_Cadastro011BntGravaClick
+        ExplicitLeft = 43
+        ExplicitWidth = 45
+      end
+      inherited BntExcluir: TSpeedButton
+        Left = 128
+        Width = 42
+        OnClick = Frame_Cadastro011BntExcluirClick
+        ExplicitLeft = 128
+        ExplicitWidth = 42
+      end
+      inherited BntAnterior: TSpeedButton
+        Left = 363
+        Width = 45
+        OnClick = Frame_Cadastro011BntAnteriorClick
+        ExplicitLeft = 363
+        ExplicitWidth = 45
+      end
+      inherited BntProximo: TSpeedButton
+        Left = 497
+        Width = 45
+        OnClick = Frame_Cadastro011BntProximoClick
+        ExplicitLeft = 497
+        ExplicitWidth = 45
+      end
+      inherited BntLimpa: TSpeedButton
+        Left = 737
+        Top = -5
+        Width = 45
+        OnClick = Frame_Cadastro011BntLimpaClick
+        ExplicitLeft = 737
+        ExplicitTop = -5
+        ExplicitWidth = 45
+      end
+      inherited BntFechar: TSpeedButton
+        Left = 788
+        Top = -5
+        Width = 45
+        OnClick = Frame_Cadastro011BntFecharClick
+        ExplicitLeft = 788
+        ExplicitTop = -5
+        ExplicitWidth = 45
+      end
+      inherited SpeedButton9: TSpeedButton
+        Left = 361
+        Width = 16
+        ExplicitLeft = 361
+        ExplicitWidth = 16
+      end
+      inherited Codigo: TEdit
+        Left = 414
+        Top = 14
+        Height = 20
+        OnKeyDown = Frame_Cadastro011CodigoKeyDown
+        ExplicitLeft = 414
+        ExplicitTop = 14
+        ExplicitHeight = 20
+      end
+      inherited Panel2: TPanel
+        Top = 43
+        Width = 1115
+        Height = 3
+        ExplicitTop = 43
+        ExplicitWidth = 1115
+        ExplicitHeight = 3
+      end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 52
+    Width = 457
+    Height = 82
+    BevelOuter = bvNone
+    TabOrder = 1
+    object GroupBox2: TGroupBox
+      Left = 2
+      Top = 2
+      Width = 449
+      Height = 71
+      TabOrder = 0
+      object Label1: TLabel
+        Left = 11
+        Top = 19
+        Width = 40
+        Height = 15
+        Alignment = taRightJustify
+        Caption = 'Pedido:'
+      end
+      object Label2: TLabel
+        Left = 11
+        Top = 40
+        Width = 40
+        Height = 15
+        Alignment = taRightJustify
+        Caption = 'Cliente:'
+      end
+      object SpeedButton2: TSpeedButton
+        Left = 340
+        Top = 14
+        Width = 20
+        Height = 19
+        Flat = True
+        Glyph.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          20000000000000040000C40E0000C40E00000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000073D0EFF063D0EFF000000FF000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000B4413FF21BE36FF1AB42FFF042408FF000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000092E0EFF34C84AFF34C94AFF2DC743FF198929FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000A270DFF41CD57FF4DE666FF43DB5AFF3FD256FF39D451FF0C4014FF0000
+          000000000000000000000000000000000000000000000000000000000000123C
+          18FF4DDA64FF5EFA79FF51E569FF176221FF3BC750FF4FE867FF35BA49FF0009
+          02FF0000000000000000000000000000000000000000000000000000000050E0
+          67FF63FF7FFF56EC6EFF184C1FFF000000001E942DFF55ED6FFF55F36FFF1F72
+          2CFF000000FF00000000000000000000000000000000000000000000000034B3
+          43FF3CBB4EFF103C15FF0000000000000000000000003DC751FF60F87AFF51E6
+          69FF09260DFF0000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000012711DFF54E76CFF62FD
+          7DFF3AAE4DFF000100FF00000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000259B35FF55EC
+          6EFF5AF774FF1E6428FF000000FF000000000000000000000000000000000000
+          000000000000000000000000000000000000000000000000000009580FFF33B4
+          46FF4CE065FF45D85CFF09280DFF000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000001269
+          1BFF45C358FF4CD762FF32A943FF010A02FF0000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000020852AFF4BC45CFF51D265FF287C34FF000000FF00000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000279033FF44BC55FF48CA5BFF174F1DFF00000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000D5212FF2A9E38FF36AF46FF114217FF00000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000198522FF16731FFF0000000000000000}
+        Visible = False
+        OnClick = SpeedButton2Click
+      end
+      object SpeedButton3: TSpeedButton
+        Left = 123
+        Top = 14
+        Width = 20
+        Height = 19
+        Flat = True
+        Glyph.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          20000000000000040000C40E0000C40E00000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000073D0EFF063D0EFF000000FF000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000B4413FF21BE36FF1AB42FFF042408FF000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000092E0EFF34C84AFF34C94AFF2DC743FF198929FF000000FF0000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000A270DFF41CD57FF4DE666FF43DB5AFF3FD256FF39D451FF0C4014FF0000
+          000000000000000000000000000000000000000000000000000000000000123C
+          18FF4DDA64FF5EFA79FF51E569FF176221FF3BC750FF4FE867FF35BA49FF0009
+          02FF0000000000000000000000000000000000000000000000000000000050E0
+          67FF63FF7FFF56EC6EFF184C1FFF000000001E942DFF55ED6FFF55F36FFF1F72
+          2CFF000000FF00000000000000000000000000000000000000000000000034B3
+          43FF3CBB4EFF103C15FF0000000000000000000000003DC751FF60F87AFF51E6
+          69FF09260DFF0000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000012711DFF54E76CFF62FD
+          7DFF3AAE4DFF000100FF00000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000259B35FF55EC
+          6EFF5AF774FF1E6428FF000000FF000000000000000000000000000000000000
+          000000000000000000000000000000000000000000000000000009580FFF33B4
+          46FF4CE065FF45D85CFF09280DFF000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000001269
+          1BFF45C358FF4CD762FF32A943FF010A02FF0000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000020852AFF4BC45CFF51D265FF287C34FF000000FF00000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          000000000000279033FF44BC55FF48CA5BFF174F1DFF00000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000D5212FF2A9E38FF36AF46FF114217FF00000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000198522FF16731FFF0000000000000000}
+        Visible = False
+        OnClick = SpeedButton3Click
+      end
+      object Codigo: TEdit
+        Left = 58
+        Top = 14
+        Width = 59
+        Height = 19
+        CharCase = ecUpperCase
+        Ctl3D = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 8
+        ParentCtl3D = False
+        ParentFont = False
+        TabOrder = 0
+        OnExit = CodigoExit
+      end
+      object Cliente: TEdit
+        Left = 58
+        Top = 39
+        Width = 59
+        Height = 19
+        CharCase = ecUpperCase
+        Ctl3D = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 8
+        ParentCtl3D = False
+        ParentFont = False
+        TabOrder = 1
+        OnExit = ClienteExit
+      end
+      object Nome: TEdit
+        Left = 123
+        Top = 39
+        Width = 315
+        Height = 19
+        CharCase = ecUpperCase
+        Ctl3D = False
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 80
+        ParentCtl3D = False
+        ParentFont = False
+        TabOrder = 2
+      end
+      object DataCad: TMaskEdit
+        Left = 366
+        Top = 12
+        Width = 70
+        Height = 23
+        Enabled = False
+        EditMask = '!99/99/9999;1;_'
+        MaxLength = 10
+        TabOrder = 3
+        Text = '  /  /    '
+      end
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 140
+    Width = 457
+    Height = 341
+    BevelOuter = bvNone
+    TabOrder = 2
+    object GroupBox1: TGroupBox
+      Left = 2
+      Top = 4
+      Width = 449
+      Height = 165
+      Caption = ' Lanches '
+      TabOrder = 0
+      object DBGrid1: TDBGrid
+        Left = 10
+        Top = 24
+        Width = 426
+        Height = 124
+        DataSource = DS_PEDLANCHE_SP_CON
+        Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+        PopupMenu = PopupMenu1
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -12
+        TitleFont.Name = 'Segoe UI'
+        TitleFont.Style = []
+        OnCellClick = DBGrid1CellClick
+        OnKeyDown = DBGrid1KeyDown
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'LAN_DESCRI'
+            Title.Caption = 'Descri'#231#227'o'
+            Width = 305
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PED_VALOR'
+            Title.Alignment = taRightJustify
+            Title.Caption = 'Valor Lanche'
+            Width = 96
+            Visible = True
+          end>
+      end
+    end
+    object GroupBox3: TGroupBox
+      Left = 2
+      Top = 170
+      Width = 449
+      Height = 166
+      Caption = ' Ingredientes do lanche'
+      TabOrder = 1
+      object DBGrid2: TDBGrid
+        Left = 10
+        Top = 23
+        Width = 426
+        Height = 130
+        DataSource = DS_PEDLANCHEITENS_SP_CON
+        Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+        PopupMenu = PopupMenu2
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -12
+        TitleFont.Name = 'Segoe UI'
+        TitleFont.Style = []
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'ING_DESCRI'
+            Title.Caption = 'Descri'#231#227'o'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PED_VALOR'
+            Title.Alignment = taRightJustify
+            Title.Caption = 'Valor Itens'
+            Width = 95
+            Visible = True
+          end>
+      end
+    end
+  end
+  object Panel3: TPanel
+    Left = 212
+    Top = 6
+    Width = 145
+    Height = 36
+    ParentCustomHint = False
+    BevelOuter = bvNone
+    BiDiMode = bdLeftToRight
+    Ctl3D = False
+    DoubleBuffered = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentBiDiMode = False
+    ParentBackground = False
+    ParentCtl3D = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    ParentShowHint = False
+    ShowCaption = False
+    ShowHint = False
+    TabOrder = 3
+    object SpeedButton1: TSpeedButton
+      Left = 8
+      Top = 1
+      Width = 49
+      Height = 35
+      Hint = 'Cadastro de Cliente'
+      Flat = True
+      Glyph.Data = {
+        D60B0000424DD60B0000000000003600000028000000200000001F0000000100
+        180000000000A00B0000D40E0000D40E00000000000000000000FFFEFDFEFFFE
+        FBFFFEFBFFFFFFFEFFFFFDFFFEFDFFFDFEFFFBFFFEFBFFFEFFFEFEFEFEFEF3FE
+        FEF6FEFEF9FCFCFEFEFEFFFDFEFAFEFDF7FDFCFDFFFEFAFEFDFAFEFEFBFFFFFD
+        FFFFFEFEFFFFFEFFFFFEFEFFFEFEFFFFFEFFFFFEFFFFFEFEFFFEFFFDFCFCFFFD
+        F5FFFEF7FFFEFEFEFFFEFEFFFCFFFEF9FFFEFBFFFEFEFFFDFEFEFEFBFEFEF6FE
+        FEEAFEFCD3EAE6F3FDFCFCFDFDFFFEFEFDFEFEFBFEFFF8FEFDFCFEFEFFFEFFFF
+        FFFFFFFEFFFEFEFFFEFEFEFEFFFEFEFFFEFEFFFEFEFFFEFDFFFEFFFEFEFFFFFE
+        FCFFFEFBFFFEFBFFFFFBFFFFFDFFFEFFFFFEFFFFFEFFFFFEFFFFFEFAFCFBDDFA
+        F87ED2C66BC8B9BEEDE7F8FDFDFEFBFCFFFDFEFDFEFFFCFDFEFEFEFFFFFEFFFF
+        FEFFFEFFFFFCFFFFFCFFFEFBFFFEFAFFFEFBFFFEFBFFFEFBFFFEFEFFFEFEFEFE
+        FFFEFEFEFEFEFDFEFFFBFEFFFCFFFFFEFFFEFFFEFEFFFEFEFDFEFDECFEFB86DD
+        CD30CBB035D5BA74D6C5E7FDFAFAFEFEFEFDFEFFFDFEFFFCFEFFFCFEFFFDFFFF
+        FEFFFDFEFFFBFEFFFAFFFEFAFFFEFBFFFEFCFFFEFCFEFEFDFEFEFCFEFFFEFDFF
+        FFFCFEFFFCFEFEFEFFF9FEFEF9FFFFFCFDFEFFFDFFFDFDFFE1FCF989DECC26CC
+        AC0CE2BA0FE2BD32D1B49EE2D6E6FDFBFDFDFEFFFBFDFEFDFEFEFCFEFFFCFFFF
+        FDFFFFFEFFFEFEFFFDFEFEFDFDFEFFFDFEFFFEFFFFFBFEFFFCFFFDFDFEFDFCFF
+        FEFCFDFFFBFDFDFDFEF7FEFEF4FDFDFCFDFEF7FBFEE2FCFC81DECE2BCCAA0BE2
+        B701E7BB03E6BC1BE2BD58D2BBB5EBE4F8FEFEFEFDFEFBFEFEFDFDFEFEFCFFFE
+        FDFEFEFEFEFEFEFEFEFEFEFEFDFEFEFCFEFEFAFEFEFAFEFEFAFFFFFCFEF7FEFE
+        F6FDFDFEFDFEFFFCFDF8FEFDF4FEFDF3FAF9CFF5F069D2C318CEAE0AE1B507E9
+        BB02E3B500E4B606E6BB2DDFBD59CBB4D2F4EDF8FDFAF2FDFAF7FEFDFAFEFEFA
+        FEFDFCFEFCFEFEFCFEFEFCFCFCFBFCFDFDFCFCFDFAF9FDFCFCFFFEFDFDFAFEFD
+        F6FCF9FBFDF9FFFEFBFCFEFBE2FBF6B2EFE453CFB921D1B307E3BA04E6B713E4
+        B80CCEA405D2A603E6B912E2B838DFBC7FD9C4DAF9F0F4FFFAFBFFF9FDFFF9FE
+        FFF9FEFFF8FFFFF8FEFFF8FEFEF9FAFDF9FAFEFDF7FDFEF6FEFEFEFEF9FDFEF9
+        FBFBF5FFFEF8FEFEF7CFECE070D6BD2BC8A515DDB508E3BA00E7B903E7B71FDC
+        B24DD4B32FC6A307DDB006E5B80EE3B741DBB987D5C2F0FDF4FFFFF6FFFFF5FF
+        FFF5FFFFF3FFFFF3FFFFF4FFFDF4FFFEF8FDFBF8FCFFFDFAFDFCFEFDF8FCFEF8
+        DBD1C897766A88777064938228BA9912DAB007E3B603E6B900E8B905E8B71DBB
+        963C846D38917715CDA507E6B801E7B71CE2B72CB3936997857C7D6E91786995
+        776997776A94776992786C91776CB4A497FFFDF5FEFDFAFEFCFBFEFEFBFBFEF8
+        D2C5B4A47862A891898F999075C3AF36C5A70AD1AA05E0B504E7B910E0B547A8
+        8F879B8F7BA89930B99C0BDFB402E7B908E6B81CE0B529AF8C5490729C9A80AB
+        9681B29485AD9487AA9289A8897FA58D76FFFDEEFFFEFCFCFCFCFEFDFDFEFDFA
+        D1C5B5D1B9A0E6EBE1E0EDE7D3EFE7ADE9DE58D0BB1EC5A817D4B12AC8AAA5E0
+        D2DEECE6CCF1E778DDC90ECBA707E2B806E4B811E5B824E0B749D3AF89D3B8CC
+        F0DEE5EDE3E8EDE5EAEBE7F2E6E29C8975FFFDF1FCFDFDF8FCFEFDFDFEFEFEFD
+        D0C5B9D0B9A3DFECE5DDECEBE1E9E9DDEBECBDF1EB90E8DC53BFAF66C1B4CDEE
+        EBD7EAE9CEEFEBB1F3E936C6AD13D6B308E4BB09E5BA05E3B715E1BB39D2B765
+        CEBDABE7DFC3EDE9DBF1F1E9EBEA9F8C7BFFFDF4FDFDFFFBFCFFFBFBFFF9FBFB
+        CFC4BACFB8A6E7EDEAC7D3D5B1BBBEAABABEA1B9BBA2BCBE94B8B78EB6B5A4BB
+        BEA4BABCA2BBBD96BBB966BFB121BFA40BE2BB02E3B800E9BB01E5BD15DFC02B
+        CEB741B6A865B4ACC8EEECE5ECEA9E8B79FFFEF3FFFBFCFFFBFEFFFAFFFAFBFD
+        CEC5BBCEBAA8E2EBE8DEEDF0D7EAEED2EBEFD7EBF0E2EAF1E1E9F0D6E9EFD1EB
+        F1D5EAEFDCEAEDDCEDEFC2EEE86AD7C50DCBA706E5BB03E6B902E5BA05E6BD10
+        E0BD31DCBE47BCA7B0E5DCDEEEE59D8E77FFFFF0FEFEFBFEFEFDFFFAFFFDFDFE
+        CEC6BACDBCA7DEEDE9D4E7E9CCDFE1C9E0E2C9DEE1D0DDE1D1DDE2CDDEE3C5DE
+        E2CCDEE3D7DCE1D8DCE0C9E0DDA5E5D934C1A60FD7B007E4B804E7B900E7B703
+        E6B81CDDB73FBFA5BAF1E5DFEFE49F8F78FFFFF1FDFEFCFCFEFEFFFCFFFCFEFC
+        CEC7BACEBDA6E3EDE8D0DCDDBBC8C9B1C6C7B1C8C9B7C7CAB9C6C9B8C7C9B4C7
+        CABAC6C9C2C5C9C2C5C9B7C9C7ABCBC47DD3C12AC2A40BDBB303E6B701E7B702
+        E4B71CDBB645BEA6C5F5ECE3EEE8A38D7BFFFEF5FEFDFEFBFDFFFFFDFEFBFEFC
+        CFC7B9CFBDA6EAEDE7E6ECEDE3EBECDFEFF1D8EBECDDEAECE3ECEEE0ECEDDCEC
+        EEE1EBEEE5EBEEE1EBEEDCEBECDDEFEDC5EFE78DE8D716C4A307DBB204E8BB07
+        E5BC1FD8B859C9B7C9F2EEE4EDEAA58D7EFFFDF7FDFCFFF9FCFFFEFEFEFDFFFC
+        D1C7BAD1BDA7E8EDE8D2DCDCBEC4C6B8C1C4B7C3C7B8C4C8B8C3C4B9C4C4B2C5
+        C6B5C4C6B8C3C6B5C3C6B8C5C7B5C4C5B1C4C49FC8C44FBFAE18BFA00CDCB508
+        E2BA1AD9B846BBA8C8F4EEE1EFE9A48F7EFFFEF4FBFEFFF5FDFFFAFEFDFCFFFD
+        D2C7BAD2BCA7E9ECE9DCE9EBD2E1E3D2E4E6D1E3E6D4E2E6D6E2E4D5E3E3CEE4
+        E5CCE4E5D2E3E6D6E1E8D3E0E5D5E3E8D4E2E6D2E4E7BFE6E482DFCD25C7A514
+        D6B11DDCB84FC3ADCCF1E9E9F0E6A89078FFFEEEFEFFFAFDFEFCFDFFF7FEFFF8
+        D4C8B7D4BEA4EAEDEBDCECF1DAECEFDFF1EDE0EDEDE0ECF2DFEAF2DFECF0DCED
+        F0DAEEF0DDEDF0E2ECF1E1EDF2E0EDF2E0EBF0E1EBF1E1ECF0CAF0ED8CE5D53E
+        C3A81FCEAD45B8ACCDF1F2EEF0E3AF9374FFFFECFAFFFAFBFFFAFDFEF8FCFEFA
+        D4C9B9D4BFA3EAEDECC9D7E2ADBDC0AFBBB4B3BBB8ADB9BFACBAC3ADB9BEAEB9
+        BDAEBABDAEB9BDAEB9BDAEB9BDAEB9BDAEB9BDAEB9BDADB9BDAABBBF9BBAB984
+        BEB253C4B15FB1B1CDEDF4EAF0E2AD9771FFFFEDF9FEFEFBFFFDF7FCFFF4FDFF
+        D2C9BED2C0A4E8EEEBDEEDF5DEEDF0E5F2EBE2ECE8DCECEFDCEEF3E0EDF0E0ED
+        F0E0EDF0E0EDF0E0EDF0E1EDF0E1EDF0E1EDF0E1EDF0E0EDF0DBEEF0DCEFF0DD
+        EEECCCF1EBC7E6E6D9EFF1E5F0E6A69773FFFFEFFFFDFFFFFDFFFDFCFFFAFEFF
+        D4CAB9D4C49DF1F1E4DAE5E7CDD8DBCFDBD6D1DDD7CBDEDAC7D9DBCDD8DECED8
+        DFCED8DFCED8DFCED8DFCED8DECED8DECED8DECED8DECED8DECBD8DBCEDDDDCE
+        DCDBC5DAD8C9DDDCDDEDF2E9ECEEA89577FFFFF0FFFCFFFDFCFFFFFDFFFDFEFF
+        D4CBB7D4C59BF2F2E3D9E1E5C1CCD5C1CFD2C2CFD0BBCECEBFD0D1C4CED2C5CD
+        D3C5CDD3C5CDD3C5CDD3C5CDD2C5CDD2C4CDD2C4CDD2C6CDD2C7CDD3C4CED1C1
+        D0CFBDCED0C2CED3E5EAF5EFEAF0AE937BFFFFEFFFFDFDFFFCFFFEFCFDFEFDFC
+        D7CBB1D7C48EFBEFCEF5EADCF2E7DFF2E8DEF2E9DCEFECDAF0ECD6F3ECD6F4EB
+        D6F4EBD6F4EBD6F4ECD7F4ECD7F5ECD7F3EBD6F4ECD7F4EBD6F5EAD8F5EAD9F4
+        EBD8F3EBD7F5E9DCF7E9DBFBEDD4B49578FFFFEFFBFEFAFDFEFBFEFAFAFEFDF8
+        D9CAA6B38339B88E4CB98A54BB8855BA8854BB8955B88A52B78D50B58D50B58C
+        50B58D50B68D50B68D51B58C50B58C50B48C4FB88F52B28A4EB28C53B48A55BB
+        8B56B88955AD865CA88C5CAD9154B99974FFFEEEF2FFF8F5FFF6F9FCFEFBFDFD
+        DCC9A2A7640EB0680BB86508BF6605BF6705BE6406BD6505BC6908B96809B968
+        09B86709B66607B56405B66607B66507B76708B56405BD6E12D28E3CB36B1DC7
+        7524C17C398D643F8F7B5D967246BA987EFFFEEFFCFFF8F4FEFBFCFDFBFDFEFA
+        E0CCA6B66F1DDC9032E7922FED9129EC9328EA8F2AEC8F2BED902BEB8C27EC8D
+        28ED8E29ED8E29EC8D28E78823E68722E68722E58621E78823F39D35E48D24EE
+        9630EC9A41CA8B46C28E50C38646B89678FFFDF3FEFEFDFBFDFDFCFDF7F9FCFC
+        FDF7E3D5B17FC69F69C89E66C89D61C59D61C59A63C69962CA9A61CB9A5ECC9B
+        5FCD9C60CE9C60CE9C60CD9C60CE9C60CD9B5FCE9D60CC9B5DD09D59D0A05AC7
+        9B5ACC9A5EC99E66C89D65C79A65FAEAD4FFFEF7FEFBFDFDFDFFFBFEFBF2FCFF
+        F7FBFBFFFEEDFFFFF3FFFFF6FDFEF5FAFFF6FDFEF8FFFEF8FFFFF6FEFFF5FDFF
+        F5FDFFF5FDFFF5FDFFF5FDFEF4FBFEF3FDFFF4FDFFF4FBFDF2FEFDF7FFFCF7FE
+        FDF8FEFDF8FDFDF8FFFDF6FFFBF4FFFDF7FFFEF7FDFFFCF5FEFE}
+      Layout = blGlyphBottom
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = SpeedButton1Click
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 463
+    Top = 47
+    Width = 380
+    Height = 262
+    Caption = 'Adicionais do Pedido'
+    TabOrder = 4
+    object DBGrid3: TDBGrid
+      Left = 11
+      Top = 21
+      Width = 358
+      Height = 228
+      DataSource = DS_PEDADICIONAL_SP_CON
+      Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+      PopupMenu = PopupMenu3
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -12
+      TitleFont.Name = 'Segoe UI'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'ING_DESCRI'
+          Title.Caption = 'Descri'#231#227'o'
+          Width = 236
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'PEA_VALOR'
+          Title.Alignment = taRightJustify
+          Title.Caption = 'Valor'
+          Width = 95
+          Visible = True
+        end>
+    end
+  end
+  object Panel4: TPanel
+    Left = 463
+    Top = 311
+    Width = 386
+    Height = 174
+    BevelOuter = bvNone
+    TabOrder = 5
+    object GroupBox5: TGroupBox
+      Left = 0
+      Top = 4
+      Width = 380
+      Height = 164
+      Caption = 'Valores do Pedido'
+      TabOrder = 0
+      object Desconto1: TLabel
+        Left = 97
+        Top = 21
+        Width = 89
+        Height = 25
+        Caption = 'Desconto:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label3: TLabel
+        Left = 40
+        Top = 58
+        Width = 146
+        Height = 37
+        Caption = 'Valor Total:'
+        Color = clRed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -27
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object ValorTotal: TEdit
+        Left = 192
+        Top = 52
+        Width = 161
+        Height = 43
+        Alignment = taRightJustify
+        CharCase = ecUpperCase
+        Ctl3D = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -32
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        MaxLength = 70
+        ParentCtl3D = False
+        ParentFont = False
+        TabOrder = 0
+      end
+      object desconto: TEdit
+        Left = 192
+        Top = 15
+        Width = 161
+        Height = 31
+        Alignment = taRightJustify
+        CharCase = ecUpperCase
+        Ctl3D = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -20
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        MaxLength = 70
+        ParentCtl3D = False
+        ParentFont = False
+        TabOrder = 1
+      end
+    end
+  end
+  object GroupBox6: TGroupBox
+    Left = 648
+    Top = 411
+    Width = 178
+    Height = 55
+    Caption = ' Valor em Dolar '
+    TabOrder = 6
+    object Dolar: TEdit
+      Left = 9
+      Top = 20
+      Width = 159
+      Height = 26
+      Alignment = taRightJustify
+      AutoSize = False
+      CharCase = ecUpperCase
+      Ctl3D = False
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      MaxLength = 70
+      ParentCtl3D = False
+      ParentFont = False
+      TabOrder = 0
+    end
+  end
+  object ImageList1: TImageList
+    Left = 512
+    Top = 200
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 186
+    Top = 224
+    object IncluirLanches1: TMenuItem
+      Caption = 'Incluir Lanches'
+      OnClick = IncluirLanches1Click
+    end
+    object ExcluirLanches1: TMenuItem
+      Caption = 'Excluir Lanches'
+      OnClick = ExcluirLanches1Click
+    end
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 186
+    Top = 374
+    object InclirIngredientes1: TMenuItem
+      Caption = 'Inclir Ingredientes'
+      OnClick = InclirIngredientes1Click
+    end
+    object ExcluirIngredientes1: TMenuItem
+      Caption = 'Excluir Ingredientes'
+      OnClick = ExcluirIngredientes1Click
+    end
+  end
+  object PopupMenu3: TPopupMenu
+    Left = 631
+    Top = 207
+    object IncluirAdicional1: TMenuItem
+      Caption = 'Incluir Adicional'
+      OnClick = IncluirAdicional1Click
+    end
+    object ExcluirAdicional1: TMenuItem
+      Caption = 'Excluir Adicional'
+      OnClick = ExcluirAdicional1Click
+    end
+  end
+  object ApplicationEvents1: TApplicationEvents
+    OnMessage = ApplicationEvents1Message
+    Left = 764
+    Top = 122
+  end
+  object DS_PEDLANCHE_SP_CON: TDataSource
+    DataSet = MODULE.PEDLANCHE_SP_CON
+    Left = 138
+    Top = 224
+  end
+  object DS_PEDLANCHEITENS_SP_CON: TDataSource
+    DataSet = MODULE.PEDLANCHEITENS_SP_CON
+    Left = 218
+    Top = 374
+  end
+  object DS_PEDADICIONAL_SP_CON: TDataSource
+    DataSet = MODULE.PEDADICIONAL_SP_CON
+    Left = 663
+    Top = 207
+  end
+  object RESTResponse1: TRESTResponse
+    Left = 462
+    Top = 328
+  end
+  object RESTClient1: TRESTClient
+    Accept = 'application/json, text/plain; q=0.9, text/html;q=0.8,'
+    AcceptCharset = 'utf-8, *;q=0.8'
+    BaseURL = 
+      'https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL?tok' +
+      'en=3f4bbe572f26bebd9086ba4bd93cd4533acbc35efd8415ced39a63372e3a3' +
+      'd70'
+    Params = <>
+    SynchronizedEvents = False
+    Left = 494
+    Top = 328
+  end
+  object RESTRequest1: TRESTRequest
+    AssignedValues = [rvConnectTimeout, rvReadTimeout]
+    Client = RESTClient1
+    Params = <>
+    Response = RESTResponse1
+    SynchronizedEvents = False
+    Left = 526
+    Top = 328
+  end
+end

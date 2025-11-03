@@ -1,0 +1,117 @@
+unit U_IncluiLanche;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ToolWin, Vcl.ComCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls, Data.DB, Vcl.StdCtrls, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFr_IncluiLanche = class(TForm)
+    Panel1: TPanel;
+    BntGrava: TSpeedButton;
+    BntFechar: TSpeedButton;
+    BntLimpa: TSpeedButton;
+    ToolBar1: TToolBar;
+    GroupBox1: TGroupBox;
+    DBGrid1: TDBGrid;
+    GroupBox2: TGroupBox;
+    DBGrid2: TDBGrid;
+    GroupBox3: TGroupBox;
+    DBGrid3: TDBGrid;
+    DS_LANCHES_SP_CON: TDataSource;
+    LANCHEINGR_SP_SEL: TDataSource;
+    procedure FormCreate(Sender: TObject);
+    procedure BntFecharClick(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure DBGrid1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BntGravaClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure LANCHES_SP_CON;
+    procedure LANCHESINGREDIENTES(cod:integer);
+  end;
+
+var
+  Fr_IncluiLanche: TFr_IncluiLanche;
+
+implementation
+
+{$R *.dfm}
+
+uses U_MODULE,UCadPedido;
+
+procedure TFr_IncluiLanche.BntFecharClick(Sender: TObject);
+begin
+   close;
+end;
+
+procedure TFr_IncluiLanche.BntGravaClick(Sender: TObject);
+begin
+   If Application.MessageBox('Confirma a inclusao do lanche ao Pedido?','Lanchonete',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+
+      with Module.PEDLANCHE_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring  := 'MNT';
+         parambyname('@INP_PEDIDO').asinteger := strtoint(var_pedido);
+         parambyname('@INP_LANCHE').asinteger := module.LANCHES_SP_CON.FieldByName('LAN_CODIGO').asinteger;
+         execproc;
+      end;
+
+
+   end;
+end;
+
+procedure TFr_IncluiLanche.DBGrid1CellClick(Column: TColumn);
+begin
+   if not module.LANCHES_SP_CON.active then exit;
+   LANCHESINGREDIENTES(module.LANCHES_SP_CON.FieldByName('LAN_CODIGO').asinteger);
+end;
+
+procedure TFr_IncluiLanche.DBGrid1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if not module.LANCHES_SP_CON.active then exit;
+   LANCHESINGREDIENTES(module.LANCHES_SP_CON.FieldByName('LAN_CODIGO').asinteger);
+end;
+
+procedure TFr_IncluiLanche.FormCreate(Sender: TObject);
+begin
+   MODULE.LANCHES_SP_CON.close;
+
+   LANCHES_SP_CON;
+   LANCHESINGREDIENTES(module.LANCHES_SP_CON.FieldByName('LAN_CODIGO').asinteger);
+
+end;
+
+
+procedure TFr_IncluiLanche.LANCHES_SP_CON;
+begin
+
+   with Module.LANCHES_SP_CON do
+   begin
+      close;
+      parambyname('@INP_CODIGO').asinteger := 0;
+      execproc;open;first;
+   end;
+
+end;
+
+
+procedure TFr_IncluiLanche.LANCHESINGREDIENTES(cod:integer);
+begin
+   with MODULE.LANCHEINGR_SP_SEL do
+   begin
+      close;
+      parambyname('@INP_LANCHE').asinteger := cod;
+      execproc;open;first;
+   end;
+end;
+
+end.

@@ -1,0 +1,569 @@
+unit U_Lanches;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids, DBGrids, u_Frame_Cadastro01, StdCtrls,DB,
+  Menus, ExtCtrls, ComCtrls,AppEvnts, System.ImageList, Vcl.ImgList, Vcl.Buttons,
+  REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope;
+
+type
+  TFr_Lanches = class(TForm)
+    Frame_Cadastro011: TFrame_Cadastro01;
+    GroupBox1: TGroupBox;
+    DBGrid1: TDBGrid;
+    Codigo: TEdit;
+    descri: TEdit;
+    valor: TEdit;
+    DS_LANCHES_SP_CON: TDataSource;
+    ApplicationEvents1: TApplicationEvents;
+    GroupBox2: TGroupBox;
+    DBGrid2: TDBGrid;
+    LANCHEINGR_SP_SEL: TDataSource;
+    PopupMenu1: TPopupMenu;
+    Incluir1: TMenuItem;
+    ExcluirIngredientes1: TMenuItem;
+    ImageList1: TImageList;
+    OpenDialog1: TOpenDialog;
+    GroupBox3: TGroupBox;
+    Image1: TImage;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    procedure Frame_Cadastro011BntNovoClick(Sender: TObject);
+    procedure Frame_Cadastro011BntGravaClick(Sender: TObject);
+    procedure Frame_Cadastro011BntAlteraClick(Sender: TObject);
+    procedure Frame_Cadastro011BntExcluirClick(Sender: TObject);
+    procedure Frame_Cadastro011BntAnteriorClick(Sender: TObject);
+    procedure Frame_Cadastro011BntProximoClick(Sender: TObject);
+    procedure Frame_Cadastro011BntLimpaClick(Sender: TObject);
+    procedure Frame_Cadastro011BntFecharClick(Sender: TObject);
+    procedure CodigoExit(Sender: TObject);
+    procedure descriExit(Sender: TObject);
+    procedure Frame_Cadastro011CodigoKeyDown(Sender: TObject;
+      var Key: Word; Shift: TShiftState);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure DBGrid1KeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BOXExit(Sender: TObject);
+    procedure ApplicationEvents1Message(var Msg: tagMSG;
+      var Handled: Boolean);
+    procedure valorExit(Sender: TObject);
+    procedure ExcluirIngredientes1Click(Sender: TObject);
+    procedure Incluir1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+
+     procedure LANCHES_LIMPA(Tip:string);
+     procedure LANCHES_SP_MNT(man:string);
+     procedure LANCHES_SP_CON;
+     procedure LANCHES_LER(tip:string);
+
+     procedure LANCHESINGREDIENTES(cod:string);
+
+
+
+    { Public declarations }
+  end;
+
+var
+  Fr_Lanches      : TFr_Lanches;
+  var_fr_tecla    : string;
+  var_codigo_var  : string;
+  var_imagem      : string;
+
+implementation
+
+uses u_module,u_valida,u_rot_busca, U_ListaIngredientes;
+
+{$R *.dfm}
+
+
+procedure TFr_Lanches.Frame_Cadastro011BntNovoClick(Sender: TObject);
+begin
+   LANCHES_LIMPA('TOT');
+
+   codigo.Enabled := false;
+   activecontrol := descri;
+end;
+
+procedure TFr_Lanches.Frame_Cadastro011BntGravaClick(Sender: TObject);
+begin
+   if DESCRI.Text = '' then exit;
+
+   LANCHES_SP_MNT('M');
+   LANCHES_SP_CON;
+
+   codigo.Enabled := true;
+   activecontrol  := CODIGO;
+
+end;
+
+procedure TFr_Lanches.Frame_Cadastro011BntAlteraClick(Sender: TObject);
+begin
+   if CODIGO.Text = '0' then exit;
+
+   codigo.Enabled := false;
+   activecontrol  := DESCRI;
+end;
+
+procedure TFr_Lanches.Frame_Cadastro011BntExcluirClick(Sender: TObject);
+begin
+
+   If Application.MessageBox('Confirma Exclusão do Lanche?','Lanchonete',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+      LANCHES_SP_MNT('E');
+      LANCHES_SP_CON;
+      LANCHES_LER('TOT');
+
+      codigo.Enabled := true;
+      activecontrol := Codigo;
+   end;
+
+end;
+
+procedure TFr_Lanches.Frame_Cadastro011BntAnteriorClick(Sender: TObject);
+begin
+
+
+   LANCHES_SP_MNT('ANT');
+   LANCHES_SP_MNT('C');
+   LANCHES_LER('PAR');
+
+   MODULE.LANCHES_SP_CON.Locate('LAN_CODIGO',codigo.text,[]);
+
+end;
+
+procedure TFr_Lanches.Frame_Cadastro011BntProximoClick(Sender: TObject);
+begin
+
+   LANCHES_SP_MNT('PRO');
+   LANCHES_SP_MNT('C');
+   LANCHES_LER('PAR');
+
+   MODULE.LANCHES_SP_CON.Locate('LAN_CODIGO',codigo.text,[]);
+end;
+
+procedure TFr_Lanches.Frame_Cadastro011BntLimpaClick(Sender: TObject);
+begin
+
+   LANCHES_LIMPA('TOT');
+   LANCHES_SP_CON;
+   LANCHES_LER('TOT');
+
+   codigo.Enabled := true;
+   activecontrol := codigo;
+end;
+
+procedure TFr_Lanches.Frame_Cadastro011BntFecharClick(Sender: TObject);
+begin
+   close;
+end;
+
+procedure TFr_Lanches.CodigoExit(Sender: TObject);
+begin
+   if var_fr_tecla <> '13' then exit;
+
+   if not valida_campo(Codigo.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+
+      codigo.Enabled := true;
+      activecontrol := Codigo;
+      exit;
+   end;
+
+   LANCHES_SP_MNT('C');
+   LANCHES_LER('PAR');
+end;
+
+procedure TFr_Lanches.descriExit(Sender: TObject);
+begin
+   if var_fr_tecla <> '13' then exit;
+
+   if not valida_campo(descri.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := descri;
+      exit;
+   end;
+end;
+
+procedure TFr_Lanches.ExcluirIngredientes1Click(Sender: TObject);
+var
+   cod: string;
+begin
+   If Application.MessageBox('Confirma Exclusão do Ingrediente ao Lanche?','Lanchonete',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+
+      cod := codigo.text;
+
+      with  MODULE.LANCHEINGR_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring  := 'EXC';
+         parambyname('@INP_LANCHE').asinteger := strtoint(codigo.text);
+         parambyname('@INP_ITEM').asinteger   := MODULE.LANCHEINGR_SP_SEL.fieldbyname('LIN_ITEM').asinteger;
+         parambyname('@INP_CODING').asinteger := MODULE.LANCHEINGR_SP_SEL.fieldbyname('ING_CODIGO').asinteger;
+         execproc;
+      end;
+
+      LANCHES_SP_CON;
+
+      MODULE.LANCHES_SP_CON.Locate('LAN_CODIGO',cod,[]);
+      codigo.text := cod;
+      LANCHES_LER('TOT');
+
+   end;
+
+end;
+
+procedure TFr_Lanches.LANCHES_SP_CON;
+begin
+
+   with Module.LANCHES_SP_CON do
+   begin
+      close;
+      parambyname('@INP_CODIGO').asinteger := 0;
+      execproc;open;first;
+   end;
+
+end;
+
+procedure TFr_Lanches.LANCHES_SP_MNT(man:string);
+begin
+
+   if man = 'C' then
+   begin
+      with Module.LANCHES_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'CON';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+
+         if parambyname('@OUT_CODERR').asinteger > 0 then
+         begin
+            LANCHES_LIMPA('PAR');
+            activecontrol := descri;
+            exit;
+         end;
+      end;
+   end;
+
+
+   if man = 'M' then
+   begin
+      with Module.LANCHES_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS'  ).asstring  := 'MNT';
+         parambyname('@INP_CODIGO'  ).asinteger := strtoint(codigo.text);
+         parambyname('@INP_DESCRI'  ).asstring  := descri.text;
+         parambyname('@INP_VALORTOT').asfloat   := strtofloat(valor.Text);
+         parambyname('@INP_IMAGEM'  ).asstring  := var_imagem;
+         execproc;
+      end;
+   end;
+
+
+   if man = 'E' then
+   begin
+
+      with Module.LANCHES_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'EXC';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+      end;
+
+   end;
+
+
+   if man = 'PRO' then
+   begin
+
+      with Module.LANCHES_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'PRO';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+
+         codigo.text := inttostr(parambyname('@OUT_CODIGO').asinteger);
+      end;
+
+   end;
+
+
+   if man = 'ANT' then
+   begin
+
+      with Module.LANCHES_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'ANT';
+         parambyname('@INP_CODIGO').asinteger := strtoint(codigo.text);
+         execproc;
+
+         codigo.text := inttostr(parambyname('@OUT_CODIGO').asinteger);
+      end;
+
+   end;
+
+end;
+
+
+procedure TFr_Lanches.SpeedButton1Click(Sender: TObject);
+begin
+   OpenDialog1.Execute();
+
+   if OpenDialog1.FileName <> '' then
+   begin
+      image1.Picture.LoadFromFile(OpenDialog1.FileName) ;
+
+      var_imagem := OpenDialog1.FileName;
+   end;
+
+end;
+
+procedure TFr_Lanches.SpeedButton2Click(Sender: TObject);
+begin
+   Image1.Picture.Assign(nil);
+   var_imagem   := '';
+end;
+
+procedure TFr_Lanches.valorExit(Sender: TObject);
+begin
+   if var_fr_tecla <> '13' then exit;
+
+   if not valida_campo(valor.text,'F') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := valor;
+      exit;
+   end;
+
+   Frame_Cadastro011BntGravaClick(Frame_Cadastro011.BntGrava);
+end;
+
+procedure TFr_Lanches.Frame_Cadastro011CodigoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+
+   if key = 13  then
+   begin
+      var_fr_tecla := '';
+
+      if not valida_campo(Frame_Cadastro011.Codigo.text,'C') then
+      begin
+         showmessage('Operação Cancelada. Campo Inválido.');
+         activecontrol := Frame_Cadastro011.Codigo;
+         exit;
+      end;
+
+      codigo.text := Frame_Cadastro011.Codigo.text;
+
+      if strtoint(Frame_Cadastro011.Codigo.text) = 0 then
+      begin
+          LANCHES_SP_CON;
+          LANCHES_LER('TOT');
+          exit;
+      end;
+
+      with Module.LANCHES_SP_CON do
+      begin
+         close;
+         parambyname('@INP_CODIGO').asinteger := strtoint(Frame_Cadastro011.Codigo.text);
+         execproc;open;first;
+      end;
+
+      LANCHES_LER('TOT');
+   end;
+
+end;
+
+procedure TFr_Lanches.Incluir1Click(Sender: TObject);
+begin
+
+   var_codigo_var := codigo.Text;
+
+   Application.CreateForm(TFr_ListaIngredientes,Fr_ListaIngredientes);
+   Fr_ListaIngredientes.showmodal;
+
+   LANCHES_SP_CON;
+
+   MODULE.LANCHES_SP_CON.Locate('LAN_CODIGO',var_codigo_var,[]);
+   codigo.text := var_codigo_var;
+   LANCHES_LER('TOT');
+end;
+
+procedure TFr_Lanches.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    if ((var_fr_tecla = '27') and (key = 27)) then close;
+
+   var_fr_tecla :=  inttostr(key);
+
+   if key = 13   then SelectNext(activecontrol,true,true);
+   if key = 27   then Frame_Cadastro011BntLimpaClick(Frame_Cadastro011.BntLimpa);
+   if ((key = 38) and (activecontrol <> DBGrid1)) then SelectNext(activecontrol,false,true);
+
+   if key = Vk_f2 then Frame_Cadastro011BntNovoClick(Frame_Cadastro011.BntNovo);
+   if key = Vk_f5 then Frame_Cadastro011BntGravaClick(Frame_Cadastro011.BntGrava);
+   if key = Vk_f4 then Frame_Cadastro011BntAlteraClick(Frame_Cadastro011.BntAltera);
+   if key = Vk_f3 then Frame_Cadastro011BntExcluirClick(Frame_Cadastro011.BntExcluir);
+
+   if key = Vk_F12 then close;
+end;
+
+procedure TFr_Lanches.LANCHES_LIMPA(tip:string);
+begin
+   var_fr_tecla := '';
+   codigo.Enabled := false;
+
+   if tip = 'TOT' then
+   begin
+      Codigo.Text := '0';
+   end;
+
+   descri.Text := '';
+   valor.Text  := '0,00';
+
+   Image1.Picture.Assign(nil);
+   var_imagem   := '';
+
+   var_fr_tecla := '27';
+
+   codigo.Enabled := true;
+end;
+
+procedure TFr_Lanches.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   Module.LANCHES_SP_CON.close;
+   Action := caFree;
+end;
+
+procedure TFr_Lanches.FormCreate(Sender: TObject);
+begin
+   LANCHES_LIMPA('TOT');
+
+   MODULE.LANCHES_SP_CON.close;
+
+   LANCHES_SP_CON;
+   LANCHES_LER('TOT');
+   CHAMARAPI;
+
+   activecontrol := codigo;
+end;
+
+procedure TFr_Lanches.DBGrid1CellClick(Column: TColumn);
+begin
+   LANCHES_LER('TOT');
+
+   CHAMARAPI;
+end;
+
+procedure TFr_Lanches.DBGrid1KeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   LANCHES_LER('TOT');
+
+   CHAMARAPI;
+end;
+
+procedure TFr_Lanches.LANCHES_LER(tip:string);
+begin
+
+   if tip = 'TOT' then
+   begin
+
+      with Module.LANCHES_SP_CON do
+      begin
+         codigo.text  := inttostr(fieldbyname('LAN_CODIGO' ).asinteger);
+         descri.Text  := fieldbyname('LAN_DESCRICAO' ).asstring;
+         valor.Text   := FormatFloat('###,##0.00',fieldbyname('LAN_VALORTOTAL' ).asfloat);
+         var_imagem   := fieldbyname('LAN_IMAGEM' ).asstring;
+         Image1.Picture.Assign(nil);
+         if var_imagem <> '' then Image1.Picture.LoadFromFile(var_imagem);
+      end;
+
+   end;
+
+   if tip = 'PAR' then
+   begin
+
+      with Module.LANCHES_SP_MNT do
+      begin
+         descri.Text  := Module.LANCHES_SP_MNT.parambyname('@OUT_DESCRI' ).asstring;
+         valor.Text   := FormatFloat('###,##0.00', Module.LANCHES_SP_MNT.parambyname('@OUT_VALORTOT' ).asfloat);
+         var_imagem   := Module.LANCHES_SP_MNT.parambyname('@OUT_IMAGEM' ).AsString;
+         Image1.Picture.Assign(nil);
+         if var_imagem <> '' then Image1.Picture.LoadFromFile(var_imagem);
+      end;
+   end;
+
+   Frame_Cadastro011.Codigo.text := codigo.text;
+   LANCHESINGREDIENTES(codigo.Text);
+
+end;
+
+
+
+procedure TFr_Lanches.BOXExit(Sender: TObject);
+begin
+   LANCHES_SP_MNT('M');
+   LANCHES_SP_CON;
+
+   activecontrol := codigo;
+end;
+
+procedure TFr_Lanches.ApplicationEvents1Message(var Msg: tagMSG;var Handled: Boolean);
+var
+  i : Smallint;
+begin
+   case Msg.Message of WM_KEYDOWN:
+   begin
+      if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+    end;
+  end;
+
+  // rolagem do scroll do mouse no DBGrid
+  if Msg.message = WM_MOUSEWHEEL then
+  begin
+     Msg.message := WM_KEYDOWN;
+     Msg.lParam := 0;
+
+     i := HiWord(Msg.wParam);
+
+     if i > 0 then Msg.wParam := VK_UP
+     else
+     Msg.wParam := VK_DOWN;
+     Handled := False;
+  end;
+
+end;
+
+
+procedure TFr_Lanches.LANCHESINGREDIENTES(cod:string);
+begin
+   with MODULE.LANCHEINGR_SP_SEL do
+   begin
+      close;
+      parambyname('@INP_LANCHE').asinteger := strtoint(cod);
+      execproc;open;first;
+   end;
+end;
+
+
+
+
+end.

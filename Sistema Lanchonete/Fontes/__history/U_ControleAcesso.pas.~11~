@@ -1,0 +1,281 @@
+unit U_ControleAcesso;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids, DBGrids, u_Frame_Cadastro01, StdCtrls, DB,
+  Menus, ExtCtrls, Buttons,AppEvnts;
+
+type
+  TFr_ControleAcesso = class(TForm)
+    Frame_Cadastro011: TFrame_Cadastro01;
+    DBGrid1: TDBGrid;
+    DS_DCONT01_SP_CON: TDataSource;
+    Panel1: TPanel;
+    Label1: TLabel;
+    SIGLA: TEdit;
+    DESCRI: TEdit;
+    SpeedButton3: TSpeedButton;
+    ApplicationEvents1: TApplicationEvents;
+    procedure Frame_Cadastro011BntExcluirClick(Sender: TObject);
+    procedure Frame_Cadastro011BntFecharClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SIGLAExit(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Frame_Cadastro011BntLimpaClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Frame_Cadastro011BntNovoClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure Frame_Cadastro011BntGravaClick(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure ApplicationEvents1Message(var Msg: tagMSG;
+      var Handled: Boolean);
+  private
+    { Private declarations }
+  public
+
+     procedure CONTROLE_LIMPA;
+
+     procedure CONTROLE_SP_CON;
+     procedure CONTROLE_SP_SEL;
+
+
+    { Public declarations }
+  end;
+
+var
+  Fr_ControleAcesso   : TFr_ControleAcesso;
+  var_fr_tecla : string;
+implementation
+
+uses u_module,u_valida, u_rot_busca, U_Pes_Usuarios, u_rot_tabtemp;
+
+{$R *.dfm}
+
+procedure TFr_ControleAcesso.CONTROLE_LIMPA;
+begin
+
+   sigla.text  := '';
+   descri.text := '';
+
+   MODULE.CONTROLE_SP_CON.Close;
+
+   activecontrol := sigla;
+end;
+
+
+procedure TFr_ControleAcesso.Frame_Cadastro011BntExcluirClick(Sender: TObject);
+begin
+   if sigla.Text = '' then exit;
+
+   If Application.MessageBox('Confirma Exclusão dos Formularios Cadastrados para o Usuario ?','Pista',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+
+      with MODULE.CONTROLE_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'EXC';
+         parambyname('@INP_SIGLA' ).asstring := sigla.text;
+         execproc;
+      end;
+
+      CONTROLE_SP_SEL;
+   end;
+
+end;
+
+procedure TFr_ControleAcesso.Frame_Cadastro011BntFecharClick(Sender: TObject);
+begin
+   close;
+end;
+
+procedure TFr_ControleAcesso.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    if ((var_fr_tecla = '27') and (key = 27)) then close;
+
+   var_fr_tecla :=  inttostr(key);
+
+   if key = 13   then SelectNext(activecontrol,true,true);
+   if key = 27   then Frame_Cadastro011BntLimpaClick(Frame_Cadastro011.BntLimpa);
+   if ((key = 38) and (activecontrol <> DBGrid1)) then SelectNext(activecontrol,false,true);
+
+   if key = Vk_f2 then Frame_Cadastro011BntNovoClick(Frame_Cadastro011.BntNovo);
+   if key = Vk_f5 then Frame_Cadastro011BntGravaClick(Frame_Cadastro011.BntGrava);
+   if key = Vk_f3 then Frame_Cadastro011BntExcluirClick(Frame_Cadastro011.BntExcluir);
+
+   if key = Vk_F12 then close;
+end;
+
+procedure TFr_ControleAcesso.SIGLAExit(Sender: TObject);
+begin
+   if ((var_fr_tecla <> '13') and (var_fr_tecla <> '9')) then exit;
+
+   if sigla.Text = '' then SpeedButton3Click(SpeedButton3);
+
+   if sigla.Text = '' then
+   begin
+      activecontrol := sigla;
+      exit;
+   end;
+
+   if not valida_campo(sigla.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := sigla;
+      exit;
+   end;
+
+   if not busca_usuarios(sigla.Text) then
+   begin
+      showmessage('Operação Cancelada. Usuario não Cadastrado.');
+      activecontrol := sigla;
+      exit;
+   end;
+   descri.text := rot_descri;
+
+
+   CONTROLE_SP_SEL;
+
+end;
+
+procedure TFr_ControleAcesso.FormCreate(Sender: TObject);
+begin
+   Cria_Tabtemp('#FORMULARIO_AUX');
+
+   CONTROLE_LIMPA;
+
+end;
+
+procedure TFr_ControleAcesso.Frame_Cadastro011BntLimpaClick(
+  Sender: TObject);
+begin
+   CONTROLE_LIMPA;
+end;
+
+procedure TFr_ControleAcesso.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   Fecha_Tabtemp('#FORMULARIO_AUX');
+
+end;
+
+procedure TFr_ControleAcesso.Frame_Cadastro011BntNovoClick(
+  Sender: TObject);
+begin
+   CONTROLE_LIMPA;
+end;
+
+procedure TFr_ControleAcesso.CONTROLE_SP_SEL;
+begin
+
+   with MODULE.CONTROLE_SP_SEL do
+   begin
+      close;
+      parambyname('@INP_SIGLA').asstring := sigla.Text;
+      execproc;
+   end;
+
+   CONTROLE_SP_CON;
+
+end;
+
+procedure TFr_ControleAcesso.DBGrid1DblClick(Sender: TObject);
+var
+   var_locate : string;
+begin
+
+   if not MODULE.CONTROLE_SP_CON.active then exit;
+   if MODULE.CONTROLE_SP_CON.FieldByName('FOR_NOME').asstring = '' then exit;
+
+   var_locate := MODULE.CONTROLE_SP_CON.FieldByName('FOR_NOME').asstring;
+
+   with MODULE.CONTROLE_SP_MNT do
+   begin
+      close;
+      parambyname('@INP_STATUS').asstring := 'MDS';
+      parambyname('@INP_SIGLA' ).asstring := sigla.text;
+      parambyname('@INP_NOME'  ).asstring := MODULE.CONTROLE_SP_CON.FieldByName('FOR_NOME').asstring;
+      execproc;
+   end;
+
+   CONTROLE_SP_CON;
+
+   MODULE.CONTROLE_SP_CON.Locate('FOR_NOME',var_locate,[]);
+end;
+
+procedure TFr_ControleAcesso.CONTROLE_SP_CON;
+begin
+   with MODULE.CONTROLE_SP_CON do
+   begin
+      close;
+      execproc;open;first;
+   end;
+end;
+
+procedure TFr_ControleAcesso.Frame_Cadastro011BntGravaClick(
+  Sender: TObject);
+begin
+
+   if not MODULE.CONTROLE_SP_CON.active then exit;
+   if MODULE.CONTROLE_SP_CON.FieldByName('FOR_NOME').asstring = '' then exit;
+
+   with MODULE.CONTROLE_SP_MNT do
+   begin
+      close;
+      parambyname('@INP_STATUS').asstring := 'GRA';
+      parambyname('@INP_SIGLA' ).asstring := sigla.text;
+      execproc;
+   end;
+
+end;
+
+procedure TFr_ControleAcesso.SpeedButton3Click(Sender: TObject);
+begin
+   paramentros[1] := '';
+
+   Application.CreateForm(TFr_Pes_Usuarios,Fr_Pes_Usuarios);
+   Fr_Pes_Usuarios.ShowModal;
+
+   if paramentros[1] = '' then
+   begin
+      activecontrol := sigla;
+      exit;
+   end;
+
+   var_fr_tecla:= '13';
+
+   sigla.Text := paramentros[1];
+   siglaExit(sigla);
+end;
+
+procedure TFr_ControleAcesso.ApplicationEvents1Message(var Msg: tagMSG;var Handled: Boolean);
+var
+  i : Smallint;
+begin
+   case Msg.Message of WM_KEYDOWN:
+   begin
+      if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+   end;
+   end;
+
+   // rolagem do scroll do mouse no DBGrid
+   if Msg.message = WM_MOUSEWHEEL then
+   begin
+      Msg.message := WM_KEYDOWN;
+      Msg.lParam := 0;
+
+      i := HiWord(Msg.wParam);
+
+      if i > 0 then Msg.wParam := VK_UP
+      else
+      Msg.wParam := VK_DOWN;
+      Handled := False;
+   end;
+
+
+end;
+
+end.

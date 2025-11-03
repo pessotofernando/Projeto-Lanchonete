@@ -1,0 +1,272 @@
+object Fr_ControleAcesso: TFr_ControleAcesso
+  Left = 239
+  Top = 202
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Controle de Acesso - Usuarios'
+  ClientHeight = 373
+  ClientWidth = 463
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  KeyPreview = True
+  Position = poDesktopCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  TextHeight = 13
+  inline Frame_Cadastro011: TFrame_Cadastro01
+    Left = 0
+    Top = 0
+    Width = 463
+    Height = 49
+    Align = alTop
+    TabOrder = 1
+    ExplicitWidth = 463
+    ExplicitHeight = 49
+    inherited Panel1: TPanel
+      Width = 467
+      Height = 49
+      ExplicitWidth = 463
+      ExplicitHeight = 49
+      inherited BntAltera: TSpeedButton
+        Left = 91
+        Width = 45
+        Hint = ''
+        Enabled = False
+        Glyph.Data = {00000000}
+        ExplicitLeft = 91
+        ExplicitWidth = 45
+      end
+      inherited BntNovo: TSpeedButton
+        Width = 45
+        OnClick = Frame_Cadastro011BntNovoClick
+        ExplicitWidth = 45
+      end
+      inherited BntGrava: TSpeedButton
+        Left = 46
+        Width = 45
+        OnClick = Frame_Cadastro011BntGravaClick
+        ExplicitLeft = 46
+        ExplicitWidth = 45
+      end
+      inherited BntExcluir: TSpeedButton
+        Left = 136
+        Width = 45
+        OnClick = Frame_Cadastro011BntExcluirClick
+        ExplicitLeft = 136
+        ExplicitWidth = 45
+      end
+      inherited BntAnterior: TSpeedButton
+        Left = 181
+        Width = 45
+        Enabled = False
+        Glyph.Data = {00000000}
+        ExplicitLeft = 181
+        ExplicitWidth = 45
+      end
+      inherited BntProximo: TSpeedButton
+        Left = 315
+        Width = 45
+        Enabled = False
+        Glyph.Data = {00000000}
+        ExplicitLeft = 315
+        ExplicitWidth = 45
+      end
+      inherited BntLimpa: TSpeedButton
+        Left = 374
+        Width = 45
+        OnClick = Frame_Cadastro011BntLimpaClick
+        ExplicitLeft = 374
+        ExplicitWidth = 45
+      end
+      inherited BntFechar: TSpeedButton
+        Left = 420
+        Width = 45
+        OnClick = Frame_Cadastro011BntFecharClick
+        ExplicitLeft = 420
+        ExplicitWidth = 45
+      end
+      inherited SpeedButton9: TSpeedButton
+        Left = 361
+        Width = 12
+        ExplicitLeft = 361
+        ExplicitWidth = 12
+      end
+      inherited Codigo: TEdit
+        Left = 232
+        Height = 20
+        Visible = False
+        ExplicitLeft = 232
+        ExplicitHeight = 20
+      end
+      inherited Panel2: TPanel
+        Width = 465
+        ExplicitWidth = 465
+      end
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 88
+    Width = 466
+    Height = 293
+    DataSource = DS_DCONT01_SP_CON
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnDblClick = DBGrid1DblClick
+    Columns = <
+      item
+        Alignment = taCenter
+        Color = 15138814
+        Expanded = False
+        FieldName = 'FOR_NOME'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Title.Alignment = taRightJustify
+        Title.Caption = 'Formulario'
+        Width = 76
+        Visible = True
+      end
+      item
+        Color = 16775144
+        Expanded = False
+        FieldName = 'FOR_DESCRI'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        Title.Caption = 'Descri'#231#227'o'
+        Width = 338
+        Visible = True
+      end
+      item
+        Alignment = taCenter
+        Color = 14540799
+        Expanded = False
+        FieldName = 'FOR_SELECI'
+        Title.Alignment = taCenter
+        Title.Caption = 'Sel'
+        Width = 28
+        Visible = True
+      end>
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 49
+    Width = 463
+    Height = 37
+    Align = alTop
+    BevelOuter = bvNone
+    TabOrder = 2
+    object Label1: TLabel
+      Left = 9
+      Top = 13
+      Width = 56
+      Height = 13
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Usuario:'
+    end
+    object SpeedButton3: TSpeedButton
+      Left = 448
+      Top = 9
+      Width = 20
+      Height = 20
+      Flat = True
+      Glyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        20000000000000040000C40E0000C40E00000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000073D0EFF063D0EFF000000FF000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000000000000B4413FF21BE36FF1AB42FFF042408FF000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000092E0EFF34C84AFF34C94AFF2DC743FF198929FF000000FF0000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000A270DFF41CD57FF4DE666FF43DB5AFF3FD256FF39D451FF0C4014FF0000
+        000000000000000000000000000000000000000000000000000000000000123C
+        18FF4DDA64FF5EFA79FF51E569FF176221FF3BC750FF4FE867FF35BA49FF0009
+        02FF0000000000000000000000000000000000000000000000000000000050E0
+        67FF63FF7FFF56EC6EFF184C1FFF000000001E942DFF55ED6FFF55F36FFF1F72
+        2CFF000000FF00000000000000000000000000000000000000000000000034B3
+        43FF3CBB4EFF103C15FF0000000000000000000000003DC751FF60F87AFF51E6
+        69FF09260DFF0000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000012711DFF54E76CFF62FD
+        7DFF3AAE4DFF000100FF00000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000259B35FF55EC
+        6EFF5AF774FF1E6428FF000000FF000000000000000000000000000000000000
+        000000000000000000000000000000000000000000000000000009580FFF33B4
+        46FF4CE065FF45D85CFF09280DFF000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000001269
+        1BFF45C358FF4CD762FF32A943FF010A02FF0000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000020852AFF4BC45CFF51D265FF287C34FF000000FF00000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        000000000000279033FF44BC55FF48CA5BFF174F1DFF00000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000D5212FF2A9E38FF36AF46FF114217FF00000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000198522FF16731FFF0000000000000000}
+      Visible = False
+      OnClick = SpeedButton3Click
+    end
+    object SIGLA: TEdit
+      Left = 72
+      Top = 11
+      Width = 37
+      Height = 19
+      CharCase = ecUpperCase
+      Ctl3D = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      MaxLength = 3
+      ParentCtl3D = False
+      ParentFont = False
+      TabOrder = 0
+      OnExit = SIGLAExit
+    end
+    object DESCRI: TEdit
+      Left = 111
+      Top = 11
+      Width = 334
+      Height = 19
+      CharCase = ecUpperCase
+      Ctl3D = False
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      MaxLength = 60
+      ParentCtl3D = False
+      ParentFont = False
+      TabOrder = 1
+    end
+  end
+  object DS_DCONT01_SP_CON: TDataSource
+    Left = 288
+    Top = 233
+  end
+  object ApplicationEvents1: TApplicationEvents
+    OnMessage = ApplicationEvents1Message
+    Left = 176
+    Top = 232
+  end
+end

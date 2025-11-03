@@ -1,0 +1,448 @@
+unit U_CadCliente;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Mask, StdCtrls, Buttons, ExtCtrls, u_Frame_Cadastro01, AppEvnts;
+
+type
+  TFrCadCliente = class(TForm)
+    Frame_Cadastro011: TFrame_Cadastro01;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label12: TLabel;
+    Label2: TLabel;
+    SpeedButton2: TSpeedButton;
+    Codigo: TEdit;
+    Nome: TEdit;
+    endereco: TEdit;
+    numero: TEdit;
+    cidade: TEdit;
+    cep: TMaskEdit;
+    uf: TEdit;
+    telefo: TEdit;
+    celular: TEdit;
+    bairro: TEdit;
+    SpeedButton4: TSpeedButton;
+    ApplicationEvents1: TApplicationEvents;
+    cpf: TMaskEdit;
+    data: TMaskEdit;
+    procedure SpeedButton4Click(Sender: TObject);
+    procedure cepExit(Sender: TObject);
+    procedure ApplicationEvents1Message(var Msg: tagMSG;
+      var Handled: Boolean);
+    procedure Frame_Cadastro011BntNovoClick(Sender: TObject);
+    procedure Frame_Cadastro011BntGravaClick(Sender: TObject);
+    procedure Frame_Cadastro011BntAlteraClick(Sender: TObject);
+    procedure Frame_Cadastro011BntExcluirClick(Sender: TObject);
+    procedure Frame_Cadastro011BntAnteriorClick(Sender: TObject);
+    procedure Frame_Cadastro011CodigoKeyDown(Sender: TObject;
+      var Key: Word; Shift: TShiftState);
+    procedure Frame_Cadastro011BntProximoClick(Sender: TObject);
+    procedure Frame_Cadastro011BntLimpaClick(Sender: TObject);
+    procedure Frame_Cadastro011BntFecharClick(Sender: TObject);
+    procedure CodigoExit(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure emailExit(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure CLIENTE_limpa(tip:string);
+    procedure CLIENTE_SP_MNT(man:string);
+    procedure CLIENTE_LER(tip:string);
+
+  end;
+
+var
+  FrCadCliente : TFrCadCliente;
+  var_fr_tecla     : string;
+
+implementation
+
+uses u_valida,U_Pes_Endereco,u_rot_busca, U_MODULE, U_Pes_Cliente;
+
+{$R *.dfm}
+
+procedure TFrCadCliente.CLIENTE_limpa(tip:string);
+begin
+
+   if tip = 'TOT' then
+   begin
+      Codigo.Text := '0';
+      Frame_Cadastro011.Codigo.text := '0';
+   end;
+
+   nome.text       := '';
+   cpf.text        := '';
+   Endereco.text   := '';
+   bairro.text     := '';
+   Cidade.text     := '';
+   uf.text         := '';
+   cep.text        := '';
+   numero.text     := '';
+   telefo.text     := '';
+   celular.text    := '';
+   data.text       := '';
+
+
+end;
+
+
+procedure TFrCadCliente.SpeedButton4Click(Sender: TObject);
+begin
+   paramentros[1] := '';
+
+   Application.CreateForm(TFr_Pes_endereco,Fr_Pes_endereco);
+   Fr_Pes_endereco.ShowModal;
+
+   if paramentros[1] = '' then
+   begin
+      activecontrol := cep;
+      exit;
+   end;
+
+   var_fr_tecla:= '13';
+
+   cep.Text := paramentros[1];
+   cepExit(cep);
+end;
+
+procedure TFrCadCliente.cepExit(Sender: TObject);
+begin
+   if ((var_fr_tecla <> '13') and (var_fr_tecla <> '9')) then exit;
+
+   if cep.Text = '     -   ' then SpeedButton4Click(SpeedButton4);
+
+   if cep.Text = '     -   ' then
+   begin
+      activecontrol := cep;
+      exit;
+   end;
+
+   if not valida_campo(Cep.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := Cep;
+      exit;
+   end;
+
+   if not busca_endereco(cep.Text) then
+   begin
+      showmessage('Operação Cancelada. Endereco não Cadastrado.');
+      activecontrol := cep;
+      exit;
+   end;
+   bairro.text   := rot_bairro;
+   cidade.text   := rot_cidade;
+   endereco.text := Rot_endere;
+   uf.text       := rot_uf;
+
+end;
+
+procedure TFrCadCliente.ApplicationEvents1Message(var Msg: tagMSG;
+  var Handled: Boolean);
+begin
+    case Msg.Message of WM_KEYDOWN:
+    begin
+       if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+    end;
+    end;
+
+end;
+
+procedure TFrCadCliente.Frame_Cadastro011BntNovoClick(Sender: TObject);
+begin
+   cliente_limpa('TOT');
+
+   activecontrol := cpf;
+
+   activecontrol := cpf;
+end;
+
+procedure TFrCadCliente.Frame_Cadastro011BntGravaClick(
+  Sender: TObject);
+begin
+   if not valida_campo(nome.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := nome;
+      exit;
+   end;
+
+   CLIENTE_SP_MNT('M');
+
+   Showmessage('Operação Realizada com Sucesso!');
+
+   activecontrol := codigo;
+end;
+
+procedure TFrCadCliente.Frame_Cadastro011BntAlteraClick(
+  Sender: TObject);
+begin
+   if codigo.Text = '0' then exit;
+   activecontrol := cpf;
+end;
+
+procedure TFrCadCliente.Frame_Cadastro011BntExcluirClick(
+  Sender: TObject);
+begin
+   If Application.MessageBox('Confirma Exclusão do Cadastro de Cliente ?','Lanchonete',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+      CLIENTE_SP_MNT('E');
+      CLIENTE_limpa('TOT');
+      activecontrol := Codigo;
+   end;
+end;
+
+procedure TFrCadCliente.Frame_Cadastro011BntAnteriorClick(
+  Sender: TObject);
+begin
+   CLIENTE_SP_MNT('ANT');
+   CLIENTE_SP_MNT('C');
+   CLIENTE_LER('CON');
+end;
+
+procedure TFrCadCliente.Frame_Cadastro011CodigoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+   if key = 13  then
+   begin
+
+      if not valida_campo(Frame_Cadastro011.Codigo.text,'C') then
+      begin
+         showmessage('Operação Cancelada. Campo Inválido.');
+         activecontrol := Frame_Cadastro011.Codigo;
+         exit;
+      end;
+
+      codigo.text := Frame_Cadastro011.Codigo.text;
+
+      CLIENTE_SP_MNT('C');
+      CLIENTE_LER('CON');
+   end;
+
+end;
+
+procedure TFrCadCliente.Frame_Cadastro011BntProximoClick(
+  Sender: TObject);
+begin
+   CLIENTE_SP_MNT('PRO');
+   CLIENTE_SP_MNT('C');
+   CLIENTE_LER('CON');
+end;
+
+procedure TFrCadCliente.Frame_Cadastro011BntLimpaClick(
+  Sender: TObject);
+begin
+   CLIENTE_limpa('TOT');
+   activecontrol := codigo;
+end;
+
+procedure TFrCadCliente.Frame_Cadastro011BntFecharClick(
+  Sender: TObject);
+begin
+   close;
+end;
+
+procedure TFrCadCliente.CodigoExit(Sender: TObject);
+begin
+   if var_fr_tecla <> '13' then exit;
+
+   if Codigo.Text = '' then SpeedButton2Click(SpeedButton2);
+
+   if Codigo.Text = '' then
+   begin
+      activecontrol := Codigo;
+      exit;
+   end;
+
+
+   if not valida_campo(Codigo.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := Codigo;
+      exit;
+   end;
+
+   CLIENTE_SP_MNT('C');
+   CLIENTE_LER('CON');
+end;
+
+
+procedure TFrCadCliente.CLIENTE_SP_MNT(man:string);
+begin
+
+   if man = 'C' then
+   begin
+      with Module.CLIENTE_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'CON';
+         parambyname('@INP_CODIGO').asstring := codigo.text;
+         execproc;
+
+         if parambyname('@OUT_CODERR').asinteger > 0 then
+         begin
+            CLIENTE_limpa('PAR');
+            Frame_Cadastro011.Codigo.text := codigo.text;
+            activecontrol := cpf;
+            exit;
+         end;
+      end;
+   end;
+
+   if man = 'M' then
+   begin
+      with Module.CLIENTE_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS'    ).asstring := 'MNT';
+         parambyname('@INP_CODIGO'    ).asstring := codigo.text;
+         parambyname('@INP_CPF'       ).asstring := cpf.text;
+         parambyname('@INP_DESCRI'    ).asstring := nome.text;
+         parambyname('@INP_ENDERE'    ).asstring := endereco.text;
+         parambyname('@INP_BAIRRO'    ).asstring := bairro.text;
+         parambyname('@INP_CIDADE'    ).asstring := cidade.text;
+         parambyname('@INP_ESTADO'    ).asstring := uf.text;
+         parambyname('@INP_CEP'       ).asstring := cep.text;
+         parambyname('@INP_NUMERO'    ).asstring := numero.text;
+         parambyname('@INP_TELEFONE'  ).asstring := telefo.text;
+         parambyname('@INP_CELULAR'   ).asstring := celular.text;
+         execproc;
+
+         codigo.Text := parambyname('@OUT_CODIGO').asstring;  
+         Frame_Cadastro011.Codigo.text := codigo.text;
+      end;
+   end;
+
+   if man = 'E' then
+   begin
+      with Module.CLIENTE_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'EXC';
+         parambyname('@INP_CODIGO').asstring := codigo.text;
+         execproc;
+      end;
+   end;
+
+   if man = 'PRO' then
+   begin
+      with Module.CLIENTE_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'PRO';
+         parambyname('@INP_CODIGO').asstring := codigo.text;
+         execproc;
+
+         codigo.text := parambyname('@OUT_CODIGO').asstring;
+      end;
+   end;
+
+   if man = 'ANT' then
+   begin
+      with Module.CLIENTE_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'ANT';
+         parambyname('@INP_CODIGO').asstring := codigo.text;
+         execproc;
+
+         codigo.text := parambyname('@OUT_CODIGO').asstring;
+      end;
+   end;
+end;
+
+procedure TFrCadCliente.CLIENTE_LER(tip:string);
+begin
+   if tip = 'CON' then
+   begin
+
+      with Module.CLIENTE_SP_MNT do
+      begin
+         Nome.Text       := parambyname('@OUT_DESCRI'  ).asstring;
+         cpf.text        := parambyname('@OUT_CPF'     ).asstring;
+         cep.Text        := parambyname('@OUT_CEP'     ).asstring;
+         endereco.Text   := parambyname('@OUT_ENDERE'  ).asstring;
+         bairro.text     := parambyname('@OUT_BAIRRO'  ).asstring;
+         cidade.Text     := parambyname('@OUT_CIDADE'  ).asstring;
+         uf.Text         := parambyname('@OUT_ESTADO'  ).asstring;
+         numero.text     := parambyname('@OUT_NUMERO'  ).asstring;
+         telefo.Text     := parambyname('@OUT_TELEFONE').asstring;
+         celular.text    := parambyname('@OUT_CELULAR' ).asstring;
+      end;
+   end;
+
+   Frame_Cadastro011.Codigo.text := codigo.text;
+
+end;
+
+
+procedure TFrCadCliente.SpeedButton2Click(Sender: TObject);
+begin
+
+   paramentros[1] := '';
+
+   Application.CreateForm(TFr_Pes_Cliente,Fr_Pes_Cliente);
+   Fr_Pes_Cliente.ShowModal;
+
+   if paramentros[1] = '' then
+   begin
+      activecontrol := codigo;
+      exit;
+   end;
+
+   var_fr_tecla:= '13';
+
+   codigo.Text := paramentros[1];
+   codigoExit(codigo);
+
+end;
+
+procedure TFrCadCliente.FormCreate(Sender: TObject);
+begin
+   Frame_Cadastro011BntLimpaClick(Frame_Cadastro011.BntLimpa);
+end;
+
+procedure TFrCadCliente.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   var_fr_tecla :=  inttostr(key);
+
+   if key = 13 then SelectNext(activecontrol,true,true);
+   if key = 27 then Frame_Cadastro011BntLimpaClick(Frame_Cadastro011.BntLimpa);
+   if key = 38 then SelectNext(activecontrol,false,true);
+
+   if key = Vk_f2 then Frame_Cadastro011BntNovoClick(Frame_Cadastro011.BntNovo);
+   if key = Vk_f5 then Frame_Cadastro011BntGravaClick(Frame_Cadastro011.BntGrava);
+   if key = Vk_f4 then Frame_Cadastro011BntAlteraClick(Frame_Cadastro011.BntAltera);
+   if key = Vk_f3 then Frame_Cadastro011BntExcluirClick(Frame_Cadastro011.BntExcluir);
+
+   if key = Vk_F12 then close;
+end;
+
+procedure TFrCadCliente.emailExit(Sender: TObject);
+begin
+   Frame_Cadastro011BntGravaClick(Frame_Cadastro011.BntGrava);
+end;
+
+procedure TFrCadCliente.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   Action := caFree;
+end;
+
+end.

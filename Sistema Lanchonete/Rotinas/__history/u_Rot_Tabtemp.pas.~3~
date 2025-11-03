@@ -1,0 +1,67 @@
+unit u_Rot_Tabtemp;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Mask;
+
+
+procedure Cria_Tabtemp(tip:string);
+procedure Fecha_Tabtemp(tip:string);
+procedure Deleta_Tabtemp(tip:string);
+
+var
+ texto_sql : string;
+
+implementation
+
+
+uses u_module,u_valida;
+
+
+procedure Cria_Tabtemp(tip:string);
+begin
+
+   MODULE.Tabtemp.SQL.Clear;
+
+   if tip = '#FORMULARIO_AUX' then
+   begin
+      texto_sql := ' CREATE TABLE #FORMULARIO_AUX ( ' +
+                   ' FOR_NOME    VARCHAR(10) NOT NULL ,' +
+                   ' FOR_DESCRI  VARCHAR(50) NULL     ,' +
+                   ' FOR_SELECI  VARCHAR(01) NULL     ' +
+                   ' ) ';
+   end;
+
+   MODULE.Tabtemp.SQL.Add(texto_sql);
+
+   MODULE.Tabtemp.ExecSQL;
+end;
+
+procedure Fecha_Tabtemp(tip:string);
+begin
+   MODULE.Tabtemp.SQL.Clear;
+
+   if tip = '#FORMULARIO_AUX' then texto_sql := ' DROP TABLE #DFORM01_AUX ';
+
+   MODULE.Tabtemp.SQL.Add(texto_sql);
+
+   MODULE.Tabtemp.ExecSQL;
+
+end;
+
+procedure Deleta_Tabtemp(tip:string);
+begin
+
+   MODULE.Tabtemp.SQL.Clear;
+
+   if tip = '#FORMULARIO_AUX' then texto_sql := ' TRUNCATE TABLE #DFORM01_AUX ';
+
+   MODULE.Tabtemp.SQL.Add(texto_sql);
+
+   MODULE.Tabtemp.ExecSQL;
+end;
+
+
+end.

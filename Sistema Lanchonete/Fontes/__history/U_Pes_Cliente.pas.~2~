@@ -1,0 +1,213 @@
+unit U_Pes_Cliente;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Grids, DBGrids, ExtCtrls, u_Frame_impressao, DB,
+  AppEvnts, Mask, ComCtrls;
+
+type
+  TFr_Pes_Cliente = class(TForm)
+    Frame_Impressao1: TFrame_Impressao;
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    GroupBox1: TGroupBox;
+    ds_CLIENTE_SP_SEL: TDataSource;
+    ApplicationEvents1: TApplicationEvents;
+    Label1: TLabel;
+    Codigo: TEdit;
+    Label8: TLabel;
+    Nome: TEdit;
+    Label4: TLabel;
+    cgccpf: TMaskEdit;
+    procedure Frame_Impressao1BntFecharClick(Sender: TObject);
+    procedure Frame_Impressao1BntLimpaClick(Sender: TObject);
+    procedure CodigoExit(Sender: TObject);
+    procedure descriExit(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Frame_Impressao1BntGravaClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure ApplicationEvents1Message(var Msg: tagMSG;
+      var Handled: Boolean);
+    procedure NomeExit(Sender: TObject);
+    procedure cpfExit(Sender: TObject);
+    procedure cgccpfExit(Sender: TObject);
+    procedure DBGrid1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    
+    procedure retorna_Fornecedor;
+    procedure limpa_campos;
+  end;
+
+var
+  Fr_Pes_Cliente: TFr_Pes_Cliente;
+  var_fr_tecla  : string;
+
+implementation
+
+
+uses u_module,u_valida,u_rot_busca;
+{$R *.dfm}
+
+procedure TFr_Pes_Cliente.Frame_Impressao1BntFecharClick(Sender: TObject);
+begin
+   close;
+end;
+
+procedure TFr_Pes_Cliente.Frame_Impressao1BntLimpaClick(Sender: TObject);
+begin
+   limpa_campos;
+   retorna_Fornecedor;
+end;
+
+procedure TFr_Pes_Cliente.CodigoExit(Sender: TObject);
+begin
+   if var_fr_tecla <> '13' then exit;
+
+   retorna_Fornecedor;
+end;
+
+procedure TFr_Pes_Cliente.retorna_Fornecedor;
+begin
+
+   with Module.DFOR01_SP_SEL do
+   begin
+      close;
+      parambyname('@INP_CODIGO').asstring := codigo.text;
+      parambyname('@INP_DESCRI').asstring := nome.text;
+      parambyname('@INP_CGCCPF').asstring := cgccpf.text;
+      execproc;open;first;
+   end;
+
+end;
+
+procedure TFr_Pes_Cliente.limpa_campos;
+begin
+   codigo.Text := '0';
+   nome.text   := '';
+   
+   cgccpf.clear;
+   cgccpf.EditMask := '99.999.999/9999-99;1;_';
+   cgccpf.text := '';
+
+
+   activecontrol := codigo;
+end;
+
+procedure TFr_Pes_Cliente.descriExit(Sender: TObject);
+begin
+   retorna_Fornecedor;
+end;
+
+procedure TFr_Pes_Cliente.FormCreate(Sender: TObject);
+begin
+   Frame_Impressao1BntLimpaClick(Frame_Impressao1.BntLimpa);
+end;
+
+procedure TFr_Pes_Cliente.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+   if ((var_fr_tecla = '27') and (key = 27)) then close;
+
+   var_fr_tecla :=  inttostr(key);
+
+   if key = 13 then SelectNext(activecontrol,true,true);
+   if key = 27 then Frame_Impressao1BntLimpaClick(Frame_Impressao1.BntLimpa);
+   if ((key = 38) and (activecontrol <> DBGrid1)) then SelectNext(activecontrol,false,true);
+
+
+   if key = Vk_f5 then Frame_Impressao1BntGravaClick(Frame_Impressao1.BntGrava);
+   if key = Vk_F12 then close;
+end;
+
+procedure TFr_Pes_Cliente.Frame_Impressao1BntGravaClick(Sender: TObject);
+begin
+
+   if not Module.DFOR01_SP_SEL.active then exit;
+   if Module.DFOR01_SP_SEL.FieldByName('FOR_CODIGO').asstring = '' then exit;
+
+   paramentros[1] := Module.DFOR01_SP_SEL.fieldbyname('FOR_CODIGO').asstring;
+   paramentros[2] := Module.DFOR01_SP_SEL.fieldbyname('FOR_DESCRI').asstring;
+
+   close;
+end;
+
+procedure TFr_Pes_Cliente.DBGrid1DblClick(Sender: TObject);
+begin
+   Frame_Impressao1BntGravaClick(Frame_Impressao1.BntGrava);
+end;
+
+procedure TFr_Pes_Cliente.ApplicationEvents1Message(var Msg: tagMSG;var Handled: Boolean);
+var
+  i : Smallint;
+begin
+   case Msg.Message of WM_KEYDOWN:
+   begin
+      if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+    end;
+  end;
+
+  // rolagem do scroll do mouse no DBGrid
+  if Msg.message = WM_MOUSEWHEEL then
+  begin
+     Msg.message := WM_KEYDOWN;
+     Msg.lParam := 0;
+
+     i := HiWord(Msg.wParam);
+
+     if i > 0 then Msg.wParam := VK_UP
+     else
+     Msg.wParam := VK_DOWN;
+     Handled := False;
+  end;
+
+end;
+
+
+procedure TFr_Pes_Cliente.NomeExit(Sender: TObject);
+begin
+   retorna_Fornecedor;
+end;
+
+procedure TFr_Pes_Cliente.cpfExit(Sender: TObject);
+begin
+   retorna_Fornecedor;
+end;
+
+procedure TFr_Pes_Cliente.cgccpfExit(Sender: TObject);
+begin
+   if  cgccpf.EditMask = '99.999.999/9999-99;1;_' then
+   begin
+      if cgccpf.text = '  .   .   /    -  ' then
+      begin
+         retorna_Fornecedor;
+         exit;
+      end;
+
+      if not TestaCgc(cgccpf.text) then
+      begin
+         showmessage('Operação Cancelada. CGC Invalido!');
+         activecontrol := cgccpf;
+         exit;
+      end;
+   end;
+
+   retorna_Fornecedor;
+
+end;
+
+procedure TFr_Pes_Cliente.DBGrid1KeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+   if key = 13 then  Frame_Impressao1BntGravaClick(Frame_Impressao1.BntGrava);
+end;
+
+end.

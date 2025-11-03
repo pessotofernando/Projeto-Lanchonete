@@ -1,0 +1,155 @@
+unit u_Menu;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Menus, ExtCtrls, StdCtrls,jpeg;
+
+type
+  TMenu = class(TForm)
+    MainMenu1: TMainMenu;
+    Lancamentos1: TMenuItem;
+    Fechar1: TMenuItem;
+    StatusBar1: TStatusBar;
+    Image1: TImage;
+    Timer1: TTimer;
+    Utilitarios1: TMenuItem;
+    Usuario1: TMenuItem;
+    CadastrodeUsuario1: TMenuItem;
+    N2: TMenuItem;
+    abela1: TMenuItem;
+    Categoria1: TMenuItem;
+    CadastrodeFuncionarios1: TMenuItem;
+    CadastrodeEndereo1: TMenuItem;
+    N1: TMenuItem;
+    Lanche1: TMenuItem;
+    Cardapio1: TMenuItem;
+    Menu1: TMenuItem;
+    ControledeAcesso1: TMenuItem;
+    procedure Fechar1Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure Usuario1Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CadastrodeUsuario1Click(Sender: TObject);
+    procedure CadastrodeFuncionarios1Click(Sender: TObject);
+    procedure CadastrodeEndereo1Click(Sender: TObject);
+    procedure Categoria1Click(Sender: TObject);
+    procedure Lanche1Click(Sender: TObject);
+    procedure Menu1Click(Sender: TObject);
+    procedure ControledeAcesso1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Menu    : TMenu;
+
+
+implementation
+
+uses U_Usuario,U_ROT_BUSCA, U_CadUsuario,U_CadFuncionario, U_CadEndereco,
+  U_Ingredientes, U_Lanches, U_Cardapio, U_ControleAcesso;
+
+{$R *.dfm}
+
+procedure TMenu.Fechar1Click(Sender: TObject);
+begin
+   close;
+end;
+
+
+procedure TMenu.Timer1Timer(Sender: TObject);
+begin
+   StatusBar1.Panels[2].Text := trim(Usu_nome);
+   StatusBar1.Panels[3].Text := dateTIMEtostr(now()) + '    ';
+end;
+
+procedure TMenu.Usuario1Click(Sender: TObject);
+begin
+
+   Application.CreateForm(TFr_Usuario,Fr_Usuario);
+   Fr_Usuario.showmodal;
+
+end;
+
+procedure TMenu.FormActivate(Sender: TObject);
+begin
+
+   Application.CreateForm(TFr_Usuario,Fr_Usuario);
+   Fr_Usuario.showmodal;
+
+end;
+
+procedure TMenu.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+   if key = vk_F10 then
+   begin
+      usuario := '';
+
+      Application.CreateForm(TFr_Usuario,Fr_Usuario);
+      Fr_Usuario.showmodal;
+   end;
+
+end;
+
+
+procedure TMenu.Lanche1Click(Sender: TObject);
+begin
+   Application.CreateForm(TFr_Lanches,Fr_Lanches);
+   Fr_Lanches.showmodal;
+end;
+
+procedure TMenu.Menu1Click(Sender: TObject);
+begin
+   Application.CreateForm(TFr_Cardapio,Fr_Cardapio);
+   Fr_Cardapio.showmodal;
+end;
+
+procedure TMenu.CadastrodeEndereo1Click(Sender: TObject);
+begin
+   if not valida_acesso(usuario,'FRLAN_003') then exit;
+
+   Application.CreateForm(TFr_CadEndereco,Fr_CadEndereco);
+   Fr_CadEndereco.showmodal;
+end;
+
+procedure TMenu.CadastrodeFuncionarios1Click(Sender: TObject);
+begin
+   if not valida_acesso(usuario,'FRLAN_001') then exit;
+
+   Application.CreateForm(TFrCadFuncionario,FrCadFuncionario);
+   FrCadFuncionario.showmodal;
+
+end;
+
+procedure TMenu.CadastrodeUsuario1Click(Sender: TObject);
+begin
+
+
+   Application.CreateForm(TFr_CadUsuario,Fr_CadUsuario);
+   Fr_CadUsuario.showmodal;
+end;
+
+
+procedure TMenu.Categoria1Click(Sender: TObject);
+begin
+   Application.CreateForm(TFr_Ingredientes,Fr_Ingredientes);
+   Fr_Ingredientes.showmodal;
+end;
+
+procedure TMenu.ControledeAcesso1Click(Sender: TObject);
+begin
+   if not valida_acesso(usuario,'FRLAN_002') then exit;
+
+   Application.CreateForm(TFr_ControleAcesso,Fr_ControleAcesso);
+   Fr_ControleAcesso.showmodal;
+end;
+
+end.

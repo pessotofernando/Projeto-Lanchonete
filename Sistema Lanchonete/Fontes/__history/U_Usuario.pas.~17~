@@ -1,0 +1,173 @@
+unit U_Usuario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Buttons, StdCtrls, u_Frame_impressao, ExtCtrls, AppEvnts;
+
+type
+  TFr_Usuario = class(TForm)
+    Frame_Impressao1: TFrame_Impressao;
+    Panel1: TPanel;
+    Image1: TImage;
+    Image2: TImage;
+    SpeedButton3: TSpeedButton;
+    Usu01: TEdit;
+    Nome: TEdit;
+    senha: TEdit;
+    ApplicationEvents1: TApplicationEvents;
+    procedure Frame_Impressao1BntFecharClick(Sender: TObject);
+    procedure Frame_Impressao1BntLimpaClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Frame_Impressao1BntGravaClick(Sender: TObject);
+    procedure Usu01Exit(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure senhaExit(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Fr_Usuario: TFr_Usuario;
+
+implementation
+
+uses DateUtils,u_rot_busca,u_module,U_VALIDA, U_Pes_Usuarios;
+
+{$R *.dfm}
+
+procedure TFr_Usuario.Frame_Impressao1BntFecharClick(Sender: TObject);
+begin
+   close;
+end;
+
+procedure TFr_Usuario.Frame_Impressao1BntLimpaClick(Sender: TObject);
+begin
+
+
+   usu01.Text := '';
+   nome.Text  := '';
+
+   Senha.Text := '';
+
+   activecontrol := Usu01;
+
+
+end;
+
+procedure TFr_Usuario.FormCreate(Sender: TObject);
+begin
+   Frame_Impressao1BntLimpaClick(Frame_Impressao1.BntLimpa);
+end;
+
+procedure TFr_Usuario.Frame_Impressao1BntGravaClick(Sender: TObject);
+begin
+
+   with MODULE.USUARIO_SP_MNT do
+   begin
+      close;
+      parambyname('@INP_STATUS' ).asstring := 'VER';
+      parambyname('@INP_SIGLA'  ).asstring := usu01.text;
+      parambyname('@INP_SENHA'  ).asstring := senha.Text;
+      execproc;
+
+      if parambyname('@OUT_CODERR').asinteger > 0 then
+      begin
+         Application.MessageBox(pchar(parambyname('@OUT_MENERR').asstring),'Pista',16);
+         activecontrol := senha;
+         abort;
+      end;
+   end;
+
+   Usuario  := usu01.text;
+   Usu_nome := trim(nome.Text);
+
+   CLOSE;
+end;
+
+procedure TFr_Usuario.Usu01Exit(Sender: TObject);
+begin
+   if ((var_fr_tecla <> '13') and (var_fr_tecla <> '9')) then exit;
+
+   if usu01.Text = '' then SpeedButton3Click(SpeedButton3);
+
+   if usu01.Text = '' then
+   begin
+      activecontrol := usu01;
+      exit;
+   end;
+
+   with MODULE.USUARIO_SP_MNT do
+   begin
+      close;
+      parambyname('@INP_STATUS' ).asstring := 'CON';
+      parambyname('@INP_SIGLA').asstring := usu01.text;
+      execproc;
+
+      if parambyname('@OUT_CODERR').asinteger > 0 then
+      begin
+         Application.MessageBox(pchar(parambyname('@OUT_MENERR').asstring),'Pista',16);
+         activecontrol := usu01;
+         abort;
+      end;
+
+      nome.Text := parambyname('@OUT_NOME').asstring;
+   end;
+
+end;
+
+procedure TFr_Usuario.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if key = 13 then SelectNext(activecontrol,true,true);
+   if key = 38 then SelectNext(activecontrol,false,true);
+end;
+
+procedure TFr_Usuario.senhaExit(Sender: TObject);
+begin
+   Frame_Impressao1BntGravaClick(Frame_Impressao1.BntGrava);
+end;
+
+procedure TFr_Usuario.SpeedButton3Click(Sender: TObject);
+begin
+   paramentros[1] := '';
+   
+   Application.CreateForm(TFr_Pes_Usuarios,Fr_Pes_Usuarios);
+   Fr_Pes_Usuarios.ShowModal;
+
+   if paramentros[1] = '' then
+   begin
+      activecontrol := usu01;
+      exit;
+   end;
+
+   var_fr_tecla:= '13';
+
+   usu01.Text := paramentros[1];
+   usu01Exit(usu01);
+end;
+
+procedure TFr_Usuario.ApplicationEvents1Message(var Msg: tagMSG;
+  var Handled: Boolean);
+begin
+   case Msg.Message of WM_KEYDOWN:
+   begin
+      if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+    end;
+  end;
+
+end;
+
+procedure TFr_Usuario.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   Action := caFree;
+end;
+
+end.

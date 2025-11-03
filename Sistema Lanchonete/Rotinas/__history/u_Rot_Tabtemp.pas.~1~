@@ -1,0 +1,89 @@
+unit u_Rot_Tabtemp;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Mask;
+
+
+procedure Cria_Tabtemp(tip:string);
+procedure Fecha_Tabtemp(tip:string);
+procedure Deleta_Tabtemp(tip:string);
+
+var
+ texto_sql : string;
+
+implementation
+
+
+uses u_module,u_valida;
+
+
+procedure Cria_Tabtemp(tip:string);
+begin
+
+   MODULE.Tabtemp.SQL.Clear;
+
+   if tip = '#DFORM01_AUX' then
+   begin
+      texto_sql := ' CREATE TABLE #DFORM01_AUX ( ' +
+                   ' FOR_NOME    VARCHAR(10) NOT NULL ,' +
+                   ' FOR_DESCRI  VARCHAR(50) NULL     ,' +
+                   ' FOR_SELECI  VARCHAR(01) NULL     ' +
+                   ' ) ';
+   end;
+
+
+   if tip = '#DRECCAI_AUX' then
+   begin
+      texto_sql := ' CREATE TABLE #DRECCAI_AUX ( ' +
+                   ' REC_ITEM    INTEGER NOT NULL  PRIMARY KEY IDENTITY ,' +
+                   ' EVE_CODIGO  INTEGER NOT NULL  DEFAULT(0)           ,' +
+                   ' TAX_CODIGO  INTEGER NOT NULL  DEFAULT(0)           ,' +
+                   ' REC_QUANTI  INTEGER NOT NULL  DEFAULT(0)           ,' +
+                   ' REC_UNITAR  FLOAT   NOT NULL  DEFAULT(0)           ,' +
+                   ' REC_TOTAL   FLOAT   NOT NULL  DEFAULT(0)           ,' +
+                   ' REC_DESCON  FLOAT   NOT NULL  DEFAULT(0)           ,' +
+                   ' REC_SALDO   FLOAT   NOT NULL  DEFAULT(0)           ,' +
+                   ' DED_CODIGO  INTEGER NOT NULL  DEFAULT(0)           ,' +
+                   ' DED_ITEM    INTEGER NOT NULL  DEFAULT(0)           ,' +
+                   
+                   ' COT_CODIGO  INTEGER NOT NULL  DEFAULT(0)           ,' +
+                   ' REC_DATVEN  DATETIME    NULL                        ' +
+                   ' ) ';
+   end;
+
+   MODULE.Tabtemp.SQL.Add(texto_sql);
+
+   MODULE.Tabtemp.ExecSQL;
+end;
+
+procedure Fecha_Tabtemp(tip:string);
+begin
+   MODULE.Tabtemp.SQL.Clear;
+
+   if tip = '#DFORM01_AUX' then texto_sql := ' DROP TABLE #DFORM01_AUX ';
+   if tip = '#DRECCAI_AUX' then texto_sql := ' DROP TABLE #DRECCAI_AUX ';
+
+   MODULE.Tabtemp.SQL.Add(texto_sql);
+
+   MODULE.Tabtemp.ExecSQL;
+
+end;
+
+procedure Deleta_Tabtemp(tip:string);
+begin
+
+   MODULE.Tabtemp.SQL.Clear;
+
+   if tip = '#DFORM01_AUX' then texto_sql := ' TRUNCATE TABLE #DFORM01_AUX ';
+   if tip = '#DRECCAI_AUX' then texto_sql := ' TRUNCATE TABLE #DRECCAI_AUX ';
+
+   MODULE.Tabtemp.SQL.Add(texto_sql);
+
+   MODULE.Tabtemp.ExecSQL;
+end;
+
+
+end.

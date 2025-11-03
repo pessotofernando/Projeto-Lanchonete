@@ -1,0 +1,104 @@
+unit U_MODULE;
+
+interface
+
+uses
+  SysUtils, Classes, DB, FireDAC.Phys.MSSQLDef, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
+  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+  FireDAC.Phys.MSSQL, FireDAC.VCLUI.Wait, FireDAC.Comp.Client,
+  FireDAC.Phys.ODBCBase, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
+  FireDAC.DApt, FireDAC.Comp.DataSet;
+
+type
+  TMODULE = class(TDataModule)
+    FDPhysMSSQLDriverLink1: TFDPhysMSSQLDriverLink;
+    FDConnection1: TFDConnection;
+    USUARIO_SP_MNT: TFDStoredProc;
+    USUARIO_SP_SEL: TFDStoredProc;
+    ENDERECO_SP_MNT: TFDStoredProc;
+    ENDERECO_SP_SEL: TFDStoredProc;
+    INGREDIENTES_SP_CON: TFDStoredProc;
+    INGREDIENTES_SP_MNT: TFDStoredProc;
+    ENDERECO_SP_SELEND_CEP: TStringField;
+    ENDERECO_SP_SELEND_UF: TStringField;
+    ENDERECO_SP_SELEND_BAIRRO: TStringField;
+    ENDERECO_SP_SELEND_CIDADE: TStringField;
+    ENDERECO_SP_SELEND_ENDERECO: TStringField;
+    LANCHES_SP_MNT: TFDStoredProc;
+    LANCHES_SP_CON: TFDStoredProc;
+    LANCHEINGR_SP_SEL: TFDStoredProc;
+    LANCHEINGR_SP_MNT: TFDStoredProc;
+    LANCHES_SP_CONLAN_CODIGO: TIntegerField;
+    LANCHES_SP_CONLAN_DESCRICAO: TStringField;
+    LANCHES_SP_CONLAN_VALORTOTAL: TFloatField;
+    LANCHES_SP_CONLAN_IMAGEM: TStringField;
+    LANCHEINGR_SP_SELLAN_CODIGO: TIntegerField;
+    LANCHEINGR_SP_SELLIN_ITEM: TIntegerField;
+    LANCHEINGR_SP_SELING_CODIGO: TIntegerField;
+    LANCHEINGR_SP_SELING_DESCRI: TStringField;
+    LANCHEINGR_SP_SELING_IMAGEM: TStringField;
+    LANCHEINGR_SP_SELLIN_VALOR: TFloatField;
+    CONTROLE_SP_MNT: TFDStoredProc;
+    CONTROLE_SP_CON: TFDStoredProc;
+    CONTROLE_SP_SEL: TFDStoredProc;
+    CONTROLE_SP_CONFOR_NOME: TStringField;
+    CONTROLE_SP_CONFOR_DESCRI: TStringField;
+    CONTROLE_SP_CONFOR_SELECI: TStringField;
+    CLIENTE_SP_MNT: TFDStoredProc;
+    CLIENTE_SP_SEL: TFDStoredProc;
+    CLIENTE_SP_SELCLI_CODIGO: TIntegerField;
+    CLIENTE_SP_SELCLI_DESCRI: TStringField;
+    CLIENTE_SP_SELCLI_CPF: TStringField;
+    PEDIDO_SP_MNT: TFDStoredProc;
+    PEDIDO_SP_CON: TFDStoredProc;
+    PEDIDO_SP_CONPED_CODIGO: TIntegerField;
+    PEDIDO_SP_CONCLI_CODIGO: TIntegerField;
+    PEDIDO_SP_CONPED_DATA: TStringField;
+    PEDIDO_SP_CONPED_VALOR: TFloatField;
+    PEDIDO_SP_CONPED_DESCONTO: TFloatField;
+    PEDLANCHE_SP_MNT: TFDStoredProc;
+    PEDLANCHE_SP_CON: TFDStoredProc;
+    PEDLANCHE_SP_CONPED_CODIGO: TIntegerField;
+    PEDLANCHE_SP_CONPED_ITEM: TIntegerField;
+    PEDLANCHE_SP_CONLAN_CODIGO: TIntegerField;
+    PEDLANCHE_SP_CONLAN_DESCRI: TStringField;
+    PEDLANCHE_SP_CONPED_VALOR: TFloatField;
+    PEDLANCHEITENS_SP_CON: TFDStoredProc;
+    PEDLANCHEITENS_SP_CONPED_CODIGO: TIntegerField;
+    PEDLANCHEITENS_SP_CONPED_ITEM: TIntegerField;
+    PEDLANCHEITENS_SP_CONING_CODIGO: TIntegerField;
+    PEDLANCHEITENS_SP_CONING_DESCRI: TStringField;
+    PEDLANCHEITENS_SP_CONING_ITEM: TIntegerField;
+    PEDLANCHEITENS_SP_CONPED_VALOR: TFloatField;
+    PEDLANCHEITENS_SP_MNT: TFDStoredProc;
+    INGREDIENTES_SP_ADI: TFDStoredProc;
+    INGREDIENTES_SP_ADIING_CODIGO: TIntegerField;
+    INGREDIENTES_SP_ADIING_DESCRICAO: TStringField;
+    INGREDIENTES_SP_ADIING_VALOR: TBCDField;
+    INGREDIENTES_SP_ADIING_IMAGEM: TStringField;
+    INGREDIENTES_SP_CONING_CODIGO: TIntegerField;
+    INGREDIENTES_SP_CONING_DESCRICAO: TStringField;
+    INGREDIENTES_SP_CONING_VALOR: TBCDField;
+    INGREDIENTES_SP_CONING_IMAGEM: TStringField;
+    INGREDIENTES_SP_CONING_LANCHE: TStringField;
+    INGREDIENTES_SP_LAN: TFDStoredProc;
+    INGREDIENTES_SP_LANING_CODIGO: TIntegerField;
+    INGREDIENTES_SP_LANING_DESCRICAO: TStringField;
+    INGREDIENTES_SP_LANING_VALOR: TBCDField;
+    INGREDIENTES_SP_LANING_IMAGEM: TStringField;
+    INGREDIENTES_SP_LANING_LANCHE: TStringField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  MODULE: TMODULE;
+
+implementation
+
+{$R *.dfm}
+
+end.

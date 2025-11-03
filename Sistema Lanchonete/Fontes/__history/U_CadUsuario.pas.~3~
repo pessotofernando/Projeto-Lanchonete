@@ -1,0 +1,258 @@
+unit U_CadUsuario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, u_Frame_impressao, DB, Mask, Buttons,
+  StdCtrls,u_Frame_Cadastro02, Vcl.AppEvnts;
+
+type
+  TFr_CadUsuario = class(TForm)
+    Panel1: TPanel;
+    ApplicationEvents1: TApplicationEvents;
+    Label5: TLabel;
+    Sigla: TEdit;
+    Nome: TEdit;
+    Label1: TLabel;
+    Senha1: TEdit;
+    Label2: TLabel;
+    Senha2: TEdit;
+    Frame_Cadastro021: TFrame_Cadastro02;
+    SpeedButton3: TSpeedButton;
+    ApplicationEvents2: TApplicationEvents;
+    Label3: TLabel;
+    senha: TEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ApplicationEvents1Message(var Msg: tagMSG;
+      var Handled: Boolean);
+    procedure Frame_Cadastro021BntFecharClick(Sender: TObject);
+    procedure Frame_Cadastro021BntLimpaClick(Sender: TObject);
+    procedure Frame_Cadastro021BntNovoClick(Sender: TObject);
+    procedure Frame_Cadastro021BntGravaClick(Sender: TObject);
+    procedure SiglaExit(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure ApplicationEvents2Message(var Msg: tagMSG;
+      var Handled: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure limpa_campos;
+  end;
+
+var
+  Fr_CadUsuario : TFr_CadUsuario;
+  var_fr_tecla     : string;
+  
+implementation
+
+uses U_valida, u_module, u_rot_busca, U_Pes_Usuarios;
+
+{$R *.dfm}
+
+procedure TFr_CadUsuario.limpa_campos;
+begin
+
+   Sigla.text  := '';
+   Nome.text   := '';
+   senha.Text  := '';
+   Senha1.Text := '';
+   Senha2.Text := '';
+
+end;
+
+procedure TFr_CadUsuario.FormCreate(Sender: TObject);
+begin
+   limpa_campos;
+
+   activecontrol := Sigla;
+end;
+
+procedure TFr_CadUsuario.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if ((var_fr_tecla = '27') and (key = 27)) then close;
+
+   var_fr_tecla :=  inttostr(key);
+
+   if key = 13 then SelectNext(activecontrol,true,true);
+   if key = 9  then SelectNext(activecontrol,true,true);
+
+   if key = 27 then Frame_Cadastro021BntLimpaClick(Frame_Cadastro021.BntLimpa);
+   if key = 38 then SelectNext(activecontrol,false,true);
+
+   if key = Vk_f5 then Frame_Cadastro021BntGravaClick(Frame_Cadastro021.BntGrava);
+   if key = Vk_F12 then close;
+end;
+
+procedure TFr_CadUsuario.ApplicationEvents1Message(var Msg: tagMSG;
+  var Handled: Boolean);
+begin
+
+   case Msg.Message of WM_KEYDOWN:
+   begin
+      if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+    end;
+  end;
+
+end;
+
+procedure TFr_CadUsuario.Frame_Cadastro021BntFecharClick(Sender: TObject);
+begin
+   close;
+end;
+
+procedure TFr_CadUsuario.Frame_Cadastro021BntLimpaClick(Sender: TObject);
+begin
+   limpa_campos;
+
+   activecontrol := Sigla;
+end;
+
+procedure TFr_CadUsuario.Frame_Cadastro021BntNovoClick(Sender: TObject);
+var
+   SenhaCript : string;
+   senhaatu   : string;
+begin
+
+   if trim(Senha1.Text) <> trim(Senha2.text) then
+   begin
+      ShowMessage('Operação Cancelada. Senhas Diferentes');
+      activecontrol := Senha1;
+      exit;
+   end;
+
+   SenhaCript := Converte(senha2.Text,sigla.text,true);
+   Senhaatu   := Converte(senha.Text,sigla.text,true);
+
+   with MODULE.DUSU01_SP_MNT do
+   begin
+      close;
+      parambyname('@INP_STATUS'   ).AsString := 'SEN';
+      parambyname('@INP_SIGLA'    ).asstring  := sigla.text;
+      parambyname('@INP_SENHA'    ).asstring  := Senhaatu;
+      parambyname('@INP_NOVASENHA').asstring  := SenhaCript;
+      execproc;
+
+      if parambyname('@OUT_CODERR').asinteger > 0 then
+      begin
+         Application.MessageBox(pchar(parambyname('@OUT_MENERR').asstring),'Pista',16);
+         activecontrol := senha;
+         abort;
+      end;
+   end;
+
+   ShowMessage('Operação Realizada com Sucesso!!!');
+   
+end;
+
+
+procedure TFr_CadUsuario.Frame_Cadastro021BntGravaClick(Sender: TObject);
+var
+   SenhaCript : string;
+   senhaatu   : string;
+begin
+
+   if trim(Senha1.Text) <> trim(Senha2.text) then
+   begin
+      ShowMessage('Operação Cancelada. Senhas Diferentes');
+      activecontrol := Senha1;
+      exit;
+   end;
+
+   SenhaCript := Converte(senha2.Text,sigla.text,true);
+   Senhaatu   := Converte(senha.Text,sigla.text,true);
+
+   with MODULE.DUSU01_SP_MNT do
+   begin
+      close;
+      parambyname('@INP_STATUS'   ).AsString := 'SEN';
+      parambyname('@INP_SIGLA'    ).asstring  := sigla.text;
+      parambyname('@INP_SENHA'    ).asstring  := Senhaatu;
+      parambyname('@INP_NOVASENHA').asstring  := SenhaCript;
+      execproc;
+
+      if parambyname('@OUT_CODERR').asinteger > 0 then
+      begin
+         Application.MessageBox(pchar(parambyname('@OUT_MENERR').asstring),'Pista',16);
+         activecontrol := senha;
+         abort;
+      end;
+   end;
+
+   ShowMessage('Operação Realizada com Sucesso!!!');
+   
+end;
+
+procedure TFr_CadUsuario.SiglaExit(Sender: TObject);
+begin
+
+   if ((var_fr_tecla <> '13') and (var_fr_tecla <> '9')) then exit;
+
+   if sigla.Text = '' then SpeedButton3Click(SpeedButton3);
+
+   if sigla.Text = '' then
+   begin
+      activecontrol := sigla;
+      exit;
+   end;
+
+   if not valida_campo(sigla.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := Sigla;
+      exit;
+   end;
+
+   with MODULE.DUSU01_SP_MNT do
+   begin
+      close;
+      parambyname('@INP_STATUS').AsString := 'CON';
+      parambyname('@INP_SIGLA').asstring  := sigla.text;
+      execproc;
+
+      if parambyname('@OUT_CODERR').asinteger > 0 then
+      begin
+         Application.MessageBox(pchar(parambyname('@OUT_MENERR').asstring),'Pista',16);
+         activecontrol := sigla;
+         abort;
+      end;
+
+      nome.text := parambyname('@OUT_NOME').asstring;
+   end;
+
+end;
+
+procedure TFr_CadUsuario.SpeedButton3Click(Sender: TObject);
+begin
+   paramentros[1] := '';
+   
+   Application.CreateForm(TFr_Pes_Usuarios,Fr_Pes_Usuarios);
+   Fr_Pes_Usuarios.ShowModal;
+
+   if paramentros[1] = '' then
+   begin
+      activecontrol := sigla;
+      exit;
+   end;
+
+   var_fr_tecla:= '13';
+
+   sigla.Text := paramentros[1];
+   siglaExit(sigla);
+end;
+
+procedure TFr_CadUsuario.ApplicationEvents2Message(var Msg: tagMSG;
+  var Handled: Boolean);
+begin
+   case Msg.Message of WM_KEYDOWN:
+   begin
+      if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+   end;
+   end;
+end;
+
+end.

@@ -1,0 +1,248 @@
+unit U_CadEndereco;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, u_Frame_impressao, DB, Mask, Buttons,
+  StdCtrls,u_Frame_Cadastro02, Vcl.AppEvnts;
+
+type
+  TFr_CadEndereco = class(TForm)
+    Panel1: TPanel;
+    ApplicationEvents1: TApplicationEvents;
+    Label5: TLabel;
+    bairro: TEdit;
+    Label1: TLabel;
+    cidade: TEdit;
+    Label2: TLabel;
+    endereco: TEdit;
+    Frame_Cadastro021: TFrame_Cadastro02;
+    ApplicationEvents2: TApplicationEvents;
+    Label3: TLabel;
+    UF: TEdit;
+    cep: TMaskEdit;
+    Label4: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ApplicationEvents1Message(var Msg: tagMSG;
+      var Handled: Boolean);
+    procedure Frame_Cadastro021BntFecharClick(Sender: TObject);
+    procedure Frame_Cadastro021BntLimpaClick(Sender: TObject);
+    procedure Frame_Cadastro021BntNovoClick(Sender: TObject);
+    procedure ApplicationEvents2Message(var Msg: tagMSG;
+      var Handled: Boolean);
+    procedure Frame_Cadastro021BntExcluirClick(Sender: TObject);
+    procedure cepExit(Sender: TObject);
+    procedure Frame_Cadastro021BntGravaClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure limpa_campos;
+    procedure ENDERECO_SP_MNT(man:string);
+    procedure ENDERECO_LER;
+  end;
+
+var
+  Fr_CadEndereco : TFr_CadEndereco;
+  var_fr_tecla     : string;
+  
+implementation
+
+uses U_valida, u_module, u_rot_busca, U_Pes_Usuarios;
+
+{$R *.dfm}
+
+procedure TFr_CadEndereco.limpa_campos;
+begin
+
+   cep.text      := '';
+   uf.text       := '';
+   bairro.Text   := '';
+   cidade.Text   := '';
+   endereco.Text := '';
+
+end;
+
+procedure TFr_CadEndereco.FormCreate(Sender: TObject);
+begin
+   limpa_campos;
+
+   activecontrol := cep;
+end;
+
+procedure TFr_CadEndereco.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if ((var_fr_tecla = '27') and (key = 27)) then close;
+
+   var_fr_tecla :=  inttostr(key);
+
+   if key = 13 then SelectNext(activecontrol,true,true);
+   if key = 9  then SelectNext(activecontrol,true,true);
+
+   if key = 27 then Frame_Cadastro021BntLimpaClick(Frame_Cadastro021.BntLimpa);
+   if key = 38 then SelectNext(activecontrol,false,true);
+
+   if key = Vk_f5 then Frame_Cadastro021BntGravaClick(Frame_Cadastro021.BntGrava);
+   if key = Vk_F12 then close;
+end;
+
+procedure TFr_CadEndereco.ApplicationEvents1Message(var Msg: tagMSG;
+  var Handled: Boolean);
+begin
+
+   case Msg.Message of WM_KEYDOWN:
+   begin
+      if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+    end;
+  end;
+
+end;
+
+procedure TFr_CadEndereco.Frame_Cadastro021BntFecharClick(Sender: TObject);
+begin
+   close;
+end;
+
+procedure TFr_CadEndereco.Frame_Cadastro021BntLimpaClick(Sender: TObject);
+begin
+   limpa_campos;
+
+   activecontrol := cep;
+end;
+
+procedure TFr_CadEndereco.Frame_Cadastro021BntNovoClick(Sender: TObject);
+begin
+   limpa_campos;
+
+   activecontrol := cep;
+end;
+
+procedure TFr_CadEndereco.ApplicationEvents2Message(var Msg: tagMSG;
+  var Handled: Boolean);
+begin
+   case Msg.Message of WM_KEYDOWN:
+   begin
+      if (Msg.wParam = VK_TAB) then var_fr_tecla := '13';
+   end;
+   end;
+end;
+
+procedure TFr_CadEndereco.ENDERECO_SP_MNT(man:string);
+begin
+
+   if man = 'C' then
+   begin
+      with Module.ENDERECO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'CON';
+         parambyname('@INP_CEP'   ).asstring := cep.text;
+         prepare;execproc;
+
+         if Module.ENDERECO_SP_MNT.parambyname('@OUT_CODERR').asinteger > 0 then
+         begin
+            uf.text       := '';
+            bairro.Text   := '';
+            cidade.Text   := '';
+            endereco.Text := '';
+            activecontrol := uf;
+            exit;
+         end;
+         ENDERECO_LER;
+      end;
+   end;
+
+
+   if man = 'M' then
+   begin
+      with Module.ENDERECO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS'  ).asstring := 'MNT';
+         parambyname('@INP_CEP'     ).asstring := cep.text;
+         parambyname('@INP_UF'      ).asstring := uf.text;
+         parambyname('@INP_ENDERE').asstring := endereco.text;
+         parambyname('@INP_BAIRRO'  ).asstring := bairro.text;
+         parambyname('@INP_CIDADE'  ).asstring := cidade.text;
+         prepare; execproc;
+      end;
+   end;
+
+
+   if man = 'E' then
+   begin
+
+      with Module.ENDERECO_SP_MNT do
+      begin
+         close;
+         parambyname('@INP_STATUS').asstring := 'EXC';
+         parambyname('@INP_CEP'   ).asstring := cep.text;
+         execproc;
+      end;
+
+   end;
+end;
+
+procedure TFr_CadEndereco.ENDERECO_LER;
+begin
+
+   with Module.ENDERECO_SP_MNT do
+   begin
+      uf.Text       := parambyname('@OUT_UF'     ).asstring;
+      bairro.text   := parambyname('@OUT_BAIRRO' ).asstring;
+      cidade.text   := parambyname('@OUT_CIDADE' ).asstring;
+      endereco.text := parambyname('@OUT_ENDERE' ).asstring;
+   end;
+
+end;
+
+
+procedure TFr_CadEndereco.Frame_Cadastro021BntExcluirClick(
+  Sender: TObject);
+begin
+   if cep.Text = '__.___-___' then exit;
+
+   If Application.MessageBox('Confirma Exclusão do Evento ?','Pista',MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES Then
+   begin
+      ENDERECO_SP_MNT('E');
+      limpa_campos;
+      activecontrol := cep;
+   end;
+end;
+
+procedure TFr_CadEndereco.cepExit(Sender: TObject);
+begin
+   if var_fr_tecla <> '13' then exit;
+
+   if not valida_campo(cep.text,'C') then
+   begin
+      showmessage('Operação Cancelada. Campo Inválido.');
+      activecontrol := cep;
+      exit;
+   end;
+
+   ENDERECO_SP_MNT('C');
+end;
+
+procedure TFr_CadEndereco.Frame_Cadastro021BntGravaClick(Sender: TObject);
+begin
+
+   ENDERECO_SP_MNT('M');
+
+   ShowMessage('Operação Realizada com Sucesso!');
+   limpa_campos;
+   activecontrol := cep;
+end;
+
+procedure TFr_CadEndereco.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   Action := caFree
+end;
+
+end.

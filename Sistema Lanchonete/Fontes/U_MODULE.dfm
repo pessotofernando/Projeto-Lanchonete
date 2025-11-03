@@ -1,0 +1,1687 @@
+object MODULE: TMODULE
+  Height = 487
+  Width = 768
+  object FDPhysMSSQLDriverLink1: TFDPhysMSSQLDriverLink
+    Left = 40
+    Top = 8
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'Database=BANCO'
+      'User_Name=sa'
+      'Password=Master10'
+      'Server=DESKTOPFER'
+      'DriverID=MSSQL')
+    Connected = True
+    LoginPrompt = False
+    Left = 40
+    Top = 72
+  end
+  object USUARIO_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'USUARIO_SP_MNT'
+    Left = 24
+    Top = 160
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_SIGLA'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@INP_NOME'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 60
+      end
+      item
+        Position = 5
+        Name = '@INP_CPF'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 18
+      end
+      item
+        Position = 6
+        Name = '@INP_RG'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end
+      item
+        Position = 7
+        Name = '@INP_ENDERE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 80
+      end
+      item
+        Position = 8
+        Name = '@INP_NUMERO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 8
+      end
+      item
+        Position = 9
+        Name = '@INP_CIDADE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end
+      item
+        Position = 10
+        Name = '@INP_BAIRRO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end
+      item
+        Position = 11
+        Name = '@INP_CEP'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 10
+      end
+      item
+        Position = 12
+        Name = '@INP_ESTADO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 2
+      end
+      item
+        Position = 13
+        Name = '@INP_TELEFONE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end
+      item
+        Position = 14
+        Name = '@INP_CELULAR'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end
+      item
+        Position = 15
+        Name = '@INP_DATNAS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 10
+      end
+      item
+        Position = 16
+        Name = '@INP_CONTATO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 20
+      end
+      item
+        Position = 17
+        Name = '@INP_TELCONTATO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end
+      item
+        Position = 18
+        Name = '@INP_EMAIL'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 50
+      end
+      item
+        Position = 19
+        Name = '@INP_SENHA'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end
+      item
+        Position = 20
+        Name = '@INP_NOVASENHA'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end
+      item
+        Position = 21
+        Name = '@OUT_SIGLA'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 3
+      end
+      item
+        Position = 22
+        Name = '@OUT_NOME'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 60
+      end
+      item
+        Position = 23
+        Name = '@OUT_CPF'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 18
+      end
+      item
+        Position = 24
+        Name = '@OUT_RG'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 15
+      end
+      item
+        Position = 25
+        Name = '@OUT_ENDERE'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 80
+      end
+      item
+        Position = 26
+        Name = '@OUT_NUMERO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 8
+      end
+      item
+        Position = 27
+        Name = '@OUT_CIDADE'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 30
+      end
+      item
+        Position = 28
+        Name = '@OUT_BAIRRO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 30
+      end
+      item
+        Position = 29
+        Name = '@OUT_CEP'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 10
+      end
+      item
+        Position = 30
+        Name = '@OUT_ESTADO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 2
+      end
+      item
+        Position = 31
+        Name = '@OUT_TELEFONE'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 15
+      end
+      item
+        Position = 32
+        Name = '@OUT_CELULAR'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 15
+      end
+      item
+        Position = 33
+        Name = '@OUT_DATNAS'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 10
+      end
+      item
+        Position = 34
+        Name = '@OUT_CONTATO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 20
+      end
+      item
+        Position = 35
+        Name = '@OUT_TELCONTATO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 15
+      end
+      item
+        Position = 36
+        Name = '@OUT_EMAIL'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 50
+      end
+      item
+        Position = 37
+        Name = '@OUT_SENHA'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 15
+      end
+      item
+        Position = 38
+        Name = '@OUT_MENERR'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 100
+      end
+      item
+        Position = 39
+        Name = '@OUT_CODERR'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end>
+  end
+  object USUARIO_SP_SEL: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'USUARIO_SP_SEL'
+    Left = 56
+    Top = 160
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_SIGLA'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_DESCRI'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 60
+      end>
+  end
+  object ENDERECO_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'ENDERECO_SP_MNT'
+    Left = 224
+    Top = 24
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_CEP'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 9
+      end
+      item
+        Position = 4
+        Name = '@INP_UF'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 2
+      end
+      item
+        Position = 5
+        Name = '@INP_BAIRRO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 80
+      end
+      item
+        Position = 6
+        Name = '@INP_CIDADE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 80
+      end
+      item
+        Position = 7
+        Name = '@INP_ENDERE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 120
+      end
+      item
+        Position = 8
+        Name = '@OUT_CEP'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 9
+      end
+      item
+        Position = 9
+        Name = '@OUT_UF'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 2
+      end
+      item
+        Position = 10
+        Name = '@OUT_BAIRRO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 80
+      end
+      item
+        Position = 11
+        Name = '@OUT_CIDADE'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 80
+      end
+      item
+        Position = 12
+        Name = '@OUT_ENDERE'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 120
+      end
+      item
+        Position = 13
+        Name = '@OUT_CODERR'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 14
+        Name = '@OUT_MENERR'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 200
+      end>
+  end
+  object ENDERECO_SP_SEL: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'ENDERECO_SP_SEL'
+    Left = 256
+    Top = 24
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_CEP'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 9
+      end
+      item
+        Position = 3
+        Name = '@INP_ESTADO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@INP_ENDERECO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 120
+      end>
+    object ENDERECO_SP_SELEND_CEP: TStringField
+      FieldName = 'END_CEP'
+      Origin = 'END_CEP'
+      Required = True
+      Size = 9
+    end
+    object ENDERECO_SP_SELEND_UF: TStringField
+      FieldName = 'END_UF'
+      Origin = 'END_UF'
+      Required = True
+      Size = 2
+    end
+    object ENDERECO_SP_SELEND_BAIRRO: TStringField
+      FieldName = 'END_BAIRRO'
+      Origin = 'END_BAIRRO'
+      Required = True
+      Size = 80
+    end
+    object ENDERECO_SP_SELEND_CIDADE: TStringField
+      FieldName = 'END_CIDADE'
+      Origin = 'END_CIDADE'
+      Required = True
+      Size = 80
+    end
+    object ENDERECO_SP_SELEND_ENDERECO: TStringField
+      FieldName = 'END_ENDERECO'
+      Origin = 'END_ENDERECO'
+      Required = True
+      Size = 120
+    end
+  end
+  object INGREDIENTES_SP_CON: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'INGREDIENTES_SP_CON'
+    Left = 496
+    Top = 32
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object INGREDIENTES_SP_CONING_CODIGO: TIntegerField
+      FieldName = 'ING_CODIGO'
+      Origin = 'ING_CODIGO'
+      Required = True
+    end
+    object INGREDIENTES_SP_CONING_DESCRICAO: TStringField
+      FieldName = 'ING_DESCRICAO'
+      Origin = 'ING_DESCRICAO'
+      Required = True
+      Size = 50
+    end
+    object INGREDIENTES_SP_CONING_VALOR: TBCDField
+      FieldName = 'ING_VALOR'
+      Origin = 'ING_VALOR'
+      Required = True
+      DisplayFormat = '#,##0.00'
+      Precision = 10
+      Size = 2
+    end
+    object INGREDIENTES_SP_CONING_IMAGEM: TStringField
+      FieldName = 'ING_IMAGEM'
+      Origin = 'ING_IMAGEM'
+      Size = 200
+    end
+    object INGREDIENTES_SP_CONING_LANCHE: TStringField
+      FieldName = 'ING_LANCHE'
+      Origin = 'ING_LANCHE'
+      Required = True
+      Size = 1
+    end
+  end
+  object INGREDIENTES_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'INGREDIENTES_SP_MNT'
+    Left = 464
+    Top = 32
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@INP_DESCRI'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 70
+      end
+      item
+        Position = 5
+        Name = '@INP_VALOR'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@INP_IMAGEM'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 200
+      end
+      item
+        Position = 7
+        Name = '@INP_LANCHE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 1
+      end
+      item
+        Position = 8
+        Name = '@OUT_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 9
+        Name = '@OUT_DESCRI'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 70
+      end
+      item
+        Position = 10
+        Name = '@OUT_VALOR'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 11
+        Name = '@OUT_IMAGEM'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 200
+      end
+      item
+        Position = 12
+        Name = '@OUT_LANCHE'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 1
+      end
+      item
+        Position = 13
+        Name = '@OUT_CODERR'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 14
+        Name = '@OUT_MENERR'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 200
+      end>
+  end
+  object LANCHES_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'LANCHES_SP_MNT'
+    Left = 216
+    Top = 136
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@INP_DESCRI'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 70
+      end
+      item
+        Position = 5
+        Name = '@INP_VALORTOT'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@INP_IMAGEM'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 200
+      end
+      item
+        Position = 7
+        Name = '@OUT_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 8
+        Name = '@OUT_DESCRI'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 70
+      end
+      item
+        Position = 9
+        Name = '@OUT_VALORTOT'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 10
+        Name = '@OUT_IMAGEM'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 200
+      end
+      item
+        Position = 11
+        Name = '@OUT_CODERR'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 12
+        Name = '@OUT_MENERR'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 200
+      end>
+  end
+  object LANCHES_SP_CON: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'LANCHES_SP_CON'
+    Left = 248
+    Top = 136
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object LANCHES_SP_CONLAN_CODIGO: TIntegerField
+      FieldName = 'LAN_CODIGO'
+      Origin = 'LAN_CODIGO'
+      Required = True
+    end
+    object LANCHES_SP_CONLAN_DESCRICAO: TStringField
+      FieldName = 'LAN_DESCRICAO'
+      Origin = 'LAN_DESCRICAO'
+      Size = 50
+    end
+    object LANCHES_SP_CONLAN_VALORTOTAL: TFloatField
+      FieldName = 'LAN_VALORTOTAL'
+      Origin = 'LAN_VALORTOTAL'
+      DisplayFormat = '#,##0.00'
+    end
+    object LANCHES_SP_CONLAN_IMAGEM: TStringField
+      FieldName = 'LAN_IMAGEM'
+      Origin = 'LAN_IMAGEM'
+      Size = 200
+    end
+  end
+  object LANCHEINGR_SP_SEL: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'LANCHEINGR_SP_SEL'
+    Left = 528
+    Top = 144
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_LANCHE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object LANCHEINGR_SP_SELLAN_CODIGO: TIntegerField
+      FieldName = 'LAN_CODIGO'
+      Origin = 'LAN_CODIGO'
+      Required = True
+    end
+    object LANCHEINGR_SP_SELLIN_ITEM: TIntegerField
+      FieldName = 'LIN_ITEM'
+      Origin = 'LIN_ITEM'
+      Required = True
+    end
+    object LANCHEINGR_SP_SELING_CODIGO: TIntegerField
+      FieldName = 'ING_CODIGO'
+      Origin = 'ING_CODIGO'
+      Required = True
+    end
+    object LANCHEINGR_SP_SELING_DESCRI: TStringField
+      FieldName = 'ING_DESCRI'
+      Origin = 'ING_DESCRI'
+      ReadOnly = True
+      Size = 50
+    end
+    object LANCHEINGR_SP_SELING_IMAGEM: TStringField
+      FieldName = 'ING_IMAGEM'
+      Origin = 'ING_IMAGEM'
+      ReadOnly = True
+      Size = 200
+    end
+    object LANCHEINGR_SP_SELLIN_VALOR: TFloatField
+      FieldName = 'LIN_VALOR'
+      Origin = 'LIN_VALOR'
+      Required = True
+      DisplayFormat = '#,##0.00'
+    end
+  end
+  object LANCHEINGR_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'LANCHEINGR_SP_MNT'
+    Left = 496
+    Top = 144
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_LANCHE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@INP_ITEM'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@INP_CODING'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end>
+  end
+  object CONTROLE_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'CONTROLE_SP_MNT'
+    Left = 24
+    Top = 272
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_SIGLA'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@INP_NOME'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 10
+      end
+      item
+        Position = 5
+        Name = '@OUT_CODERR'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 6
+        Name = '@OUT_MENERR'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 100
+      end>
+  end
+  object CONTROLE_SP_CON: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'CONTROLE_SP_CON'
+    Left = 64
+    Top = 272
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end>
+    object CONTROLE_SP_CONFOR_NOME: TStringField
+      FieldName = 'FOR_NOME'
+    end
+    object CONTROLE_SP_CONFOR_DESCRI: TStringField
+      FieldName = 'FOR_DESCRI'
+    end
+    object CONTROLE_SP_CONFOR_SELECI: TStringField
+      FieldName = 'FOR_SELECI'
+    end
+  end
+  object CONTROLE_SP_SEL: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'CONTROLE_SP_SEL'
+    Left = 40
+    Top = 328
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_SIGLA'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end>
+  end
+  object CLIENTE_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'CLIENTE_SP_MNT'
+    Left = 216
+    Top = 216
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_CODIGO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 4
+        Name = '@INP_DESCRI'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 60
+      end
+      item
+        Position = 5
+        Name = '@INP_CPF'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end
+      item
+        Position = 6
+        Name = '@INP_ENDERE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 80
+      end
+      item
+        Position = 7
+        Name = '@INP_NUMERO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 8
+      end
+      item
+        Position = 8
+        Name = '@INP_CIDADE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end
+      item
+        Position = 9
+        Name = '@INP_BAIRRO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 30
+      end
+      item
+        Position = 10
+        Name = '@INP_CEP'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 10
+      end
+      item
+        Position = 11
+        Name = '@INP_ESTADO'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 2
+      end
+      item
+        Position = 12
+        Name = '@INP_TELEFONE'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end
+      item
+        Position = 13
+        Name = '@INP_CELULAR'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end
+      item
+        Position = 14
+        Name = '@OUT_CODIGO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 3
+      end
+      item
+        Position = 15
+        Name = '@OUT_DESCRI'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 60
+      end
+      item
+        Position = 16
+        Name = '@OUT_CPF'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 15
+      end
+      item
+        Position = 17
+        Name = '@OUT_ENDERE'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 80
+      end
+      item
+        Position = 18
+        Name = '@OUT_NUMERO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 8
+      end
+      item
+        Position = 19
+        Name = '@OUT_CIDADE'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 30
+      end
+      item
+        Position = 20
+        Name = '@OUT_BAIRRO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 30
+      end
+      item
+        Position = 21
+        Name = '@OUT_CEP'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 10
+      end
+      item
+        Position = 22
+        Name = '@OUT_ESTADO'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 2
+      end
+      item
+        Position = 23
+        Name = '@OUT_TELEFONE'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 15
+      end
+      item
+        Position = 24
+        Name = '@OUT_CELULAR'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 15
+      end
+      item
+        Position = 25
+        Name = '@OUT_DATA'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 10
+      end
+      item
+        Position = 26
+        Name = '@OUT_MENERR'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 100
+      end
+      item
+        Position = 27
+        Name = '@OUT_CODERR'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end>
+  end
+  object CLIENTE_SP_SEL: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'CLIENTE_SP_SEL'
+    Left = 248
+    Top = 216
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@INP_DESCRI'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 80
+      end
+      item
+        Position = 4
+        Name = '@INP_CPF'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 15
+      end>
+    object CLIENTE_SP_SELCLI_CODIGO: TIntegerField
+      FieldName = 'CLI_CODIGO'
+      Origin = 'CLI_CODIGO'
+      Required = True
+    end
+    object CLIENTE_SP_SELCLI_DESCRI: TStringField
+      FieldName = 'CLI_DESCRI'
+      Origin = 'CLI_DESCRI'
+      Size = 60
+    end
+    object CLIENTE_SP_SELCLI_CPF: TStringField
+      FieldName = 'CLI_CPF'
+      Origin = 'CLI_CPF'
+      Size = 15
+    end
+  end
+  object PEDIDO_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'PEDIDO_SP_MNT'
+    Left = 552
+    Top = 304
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@INP_CODCLI'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@OUT_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 6
+        Name = '@OUT_CODCLI'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 7
+        Name = '@OUT_DATA'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 15
+      end
+      item
+        Position = 8
+        Name = '@OUT_VALORTOT'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 9
+        Name = '@OUT_DESCONTO'
+        DataType = ftFloat
+        Precision = 16
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 10
+        Name = '@OUT_CODERR'
+        DataType = ftInteger
+        ParamType = ptInputOutput
+      end
+      item
+        Position = 11
+        Name = '@OUT_MENERR'
+        DataType = ftString
+        ParamType = ptInputOutput
+        Size = 200
+      end>
+  end
+  object PEDIDO_SP_CON: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'PEDIDO_SP_CON'
+    Left = 640
+    Top = 240
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@INP_CLIENTE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object PEDIDO_SP_CONPED_CODIGO: TIntegerField
+      FieldName = 'PED_CODIGO'
+      Origin = 'PED_CODIGO'
+      Required = True
+    end
+    object PEDIDO_SP_CONCLI_CODIGO: TIntegerField
+      FieldName = 'CLI_CODIGO'
+      Origin = 'CLI_CODIGO'
+      Required = True
+    end
+    object PEDIDO_SP_CONCLI_DESCRI: TStringField
+      FieldName = 'CLI_DESCRI'
+      Origin = 'CLI_DESCRI'
+      ReadOnly = True
+      Size = 60
+    end
+    object PEDIDO_SP_CONPED_DATA: TStringField
+      FieldName = 'PED_DATA'
+      Origin = 'PED_DATA'
+      Required = True
+      Size = 15
+    end
+    object PEDIDO_SP_CONPED_VALOR: TFloatField
+      FieldName = 'PED_VALOR'
+      Origin = 'PED_VALOR'
+      Required = True
+      DisplayFormat = '#,##0.00'
+    end
+    object PEDIDO_SP_CONPED_DESCONTO: TFloatField
+      FieldName = 'PED_DESCONTO'
+      Origin = 'PED_DESCONTO'
+      Required = True
+      DisplayFormat = '#,##0.00'
+    end
+  end
+  object PEDLANCHE_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'PEDLANCHE_SP_MNT'
+    Left = 192
+    Top = 320
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_PEDIDO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@INP_ITEM'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@INP_LANCHE'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object PEDLANCHE_SP_CON: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'PEDLANCHE_SP_CON'
+    Left = 440
+    Top = 256
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object PEDLANCHE_SP_CONPED_CODIGO: TIntegerField
+      FieldName = 'PED_CODIGO'
+      Origin = 'PED_CODIGO'
+      Required = True
+    end
+    object PEDLANCHE_SP_CONPED_ITEM: TIntegerField
+      FieldName = 'PED_ITEM'
+      Origin = 'PED_ITEM'
+      Required = True
+    end
+    object PEDLANCHE_SP_CONLAN_CODIGO: TIntegerField
+      FieldName = 'LAN_CODIGO'
+      Origin = 'LAN_CODIGO'
+      Required = True
+    end
+    object PEDLANCHE_SP_CONLAN_DESCRI: TStringField
+      FieldName = 'LAN_DESCRI'
+      Origin = 'LAN_DESCRI'
+      ReadOnly = True
+      Size = 50
+    end
+    object PEDLANCHE_SP_CONPED_VALOR: TFloatField
+      FieldName = 'PED_VALOR'
+      Origin = 'PED_VALOR'
+      Required = True
+      DisplayFormat = '#,##0.00'
+    end
+  end
+  object PEDLANCHEITENS_SP_CON: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'PEDLANCHEITENS_SP_CON'
+    Left = 392
+    Top = 400
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_PEDIDO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 3
+        Name = '@INP_ITEM'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object PEDLANCHEITENS_SP_CONPED_CODIGO: TIntegerField
+      FieldName = 'PED_CODIGO'
+      Origin = 'PED_CODIGO'
+      Required = True
+    end
+    object PEDLANCHEITENS_SP_CONPED_ITEM: TIntegerField
+      FieldName = 'PED_ITEM'
+      Origin = 'PED_ITEM'
+      Required = True
+    end
+    object PEDLANCHEITENS_SP_CONING_CODIGO: TIntegerField
+      FieldName = 'ING_CODIGO'
+      Origin = 'ING_CODIGO'
+      Required = True
+    end
+    object PEDLANCHEITENS_SP_CONING_DESCRI: TStringField
+      FieldName = 'ING_DESCRI'
+      Origin = 'ING_DESCRI'
+      ReadOnly = True
+      Size = 50
+    end
+    object PEDLANCHEITENS_SP_CONING_ITEM: TIntegerField
+      FieldName = 'ING_ITEM'
+      Origin = 'ING_ITEM'
+      Required = True
+    end
+    object PEDLANCHEITENS_SP_CONPED_VALOR: TFloatField
+      FieldName = 'PED_VALOR'
+      Origin = 'PED_VALOR'
+      Required = True
+      DisplayFormat = '#,##0.00'
+    end
+  end
+  object PEDLANCHEITENS_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'PEDLANCHEITENS_SP_MNT'
+    Left = 360
+    Top = 400
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_PEDIDO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@INP_ITEM'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@INP_INGITEM'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 6
+        Name = '@INP_INGCOD'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object INGREDIENTES_SP_ADI: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'INGREDIENTES_SP_ADI'
+    Left = 560
+    Top = 32
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object INGREDIENTES_SP_ADIING_CODIGO: TIntegerField
+      FieldName = 'ING_CODIGO'
+      Origin = 'ING_CODIGO'
+      Required = True
+    end
+    object INGREDIENTES_SP_ADIING_DESCRICAO: TStringField
+      FieldName = 'ING_DESCRICAO'
+      Origin = 'ING_DESCRICAO'
+      Required = True
+      Size = 50
+    end
+    object INGREDIENTES_SP_ADIING_VALOR: TBCDField
+      FieldName = 'ING_VALOR'
+      Origin = 'ING_VALOR'
+      Required = True
+      DisplayFormat = '#,##0.00'
+      Precision = 10
+      Size = 2
+    end
+    object INGREDIENTES_SP_ADIING_IMAGEM: TStringField
+      FieldName = 'ING_IMAGEM'
+      Origin = 'ING_IMAGEM'
+      Size = 200
+    end
+  end
+  object INGREDIENTES_SP_LAN: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'INGREDIENTES_SP_LAN'
+    Left = 528
+    Top = 32
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_CODIGO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object INGREDIENTES_SP_LANING_CODIGO: TIntegerField
+      FieldName = 'ING_CODIGO'
+      Origin = 'ING_CODIGO'
+      Required = True
+    end
+    object INGREDIENTES_SP_LANING_DESCRICAO: TStringField
+      FieldName = 'ING_DESCRICAO'
+      Origin = 'ING_DESCRICAO'
+      Required = True
+      Size = 50
+    end
+    object INGREDIENTES_SP_LANING_VALOR: TBCDField
+      FieldName = 'ING_VALOR'
+      Origin = 'ING_VALOR'
+      Required = True
+      DisplayFormat = '#,##0.00'
+      Precision = 10
+      Size = 2
+    end
+    object INGREDIENTES_SP_LANING_IMAGEM: TStringField
+      FieldName = 'ING_IMAGEM'
+      Origin = 'ING_IMAGEM'
+      Size = 200
+    end
+    object INGREDIENTES_SP_LANING_LANCHE: TStringField
+      FieldName = 'ING_LANCHE'
+      Origin = 'ING_LANCHE'
+      Required = True
+      Size = 1
+    end
+  end
+  object PEDADICIONAL_SP_MNT: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'PEDADICIONAL_SP_MNT'
+    Left = 544
+    Top = 400
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_STATUS'
+        DataType = ftString
+        ParamType = ptInput
+        Size = 3
+      end
+      item
+        Position = 3
+        Name = '@INP_PEDIDO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 4
+        Name = '@INP_ITEM'
+        DataType = ftInteger
+        ParamType = ptInput
+      end
+      item
+        Position = 5
+        Name = '@INP_CODING'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+  end
+  object PEDADICIONAL_SP_CON: TFDStoredProc
+    Connection = FDConnection1
+    StoredProcName = 'PEDADICIONAL_SP_CON'
+    Left = 576
+    Top = 400
+    ParamData = <
+      item
+        Position = 1
+        Name = '@RETURN_VALUE'
+        DataType = ftInteger
+        ParamType = ptResult
+      end
+      item
+        Position = 2
+        Name = '@INP_PEDIDO'
+        DataType = ftInteger
+        ParamType = ptInput
+      end>
+    object PEDADICIONAL_SP_CONPED_CODIGO: TIntegerField
+      FieldName = 'PED_CODIGO'
+      Origin = 'PED_CODIGO'
+      Required = True
+    end
+    object PEDADICIONAL_SP_CONPEA_ITEM: TIntegerField
+      FieldName = 'PEA_ITEM'
+      Origin = 'PEA_ITEM'
+      Required = True
+    end
+    object PEDADICIONAL_SP_CONING_CODIGO: TIntegerField
+      FieldName = 'ING_CODIGO'
+      Origin = 'ING_CODIGO'
+      Required = True
+    end
+    object PEDADICIONAL_SP_CONPEA_VALOR: TFloatField
+      FieldName = 'PEA_VALOR'
+      Origin = 'PEA_VALOR'
+      Required = True
+      DisplayFormat = '#,##0.00'
+    end
+    object PEDADICIONAL_SP_CONING_DESCRI: TStringField
+      FieldName = 'ING_DESCRI'
+      Origin = 'ING_DESCRI'
+      ReadOnly = True
+      Size = 50
+    end
+  end
+end

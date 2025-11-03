@@ -1,0 +1,30 @@
+program PJ_Lanchonete;
+
+uses
+  Forms,
+  U_Menu in 'U_Menu.pas' {Menu},
+  u_Frame_Cadastro02 in '..\Modulo Frame\u_Frame_Cadastro02.pas' {Frame_Cadastro02: TFrame},
+  u_valida in '..\Modulo Comuns\u_valida.pas',
+  U_MODULE in 'U_MODULE.pas' {MODULE: TDataModule},
+  U_Usuario in 'U_Usuario.pas' {Fr_Usuario},
+  u_rot_busca in '..\Rotinas\u_rot_busca.pas',
+  u_Frame_Cadastro01 in '..\Modulo Frame\u_Frame_Cadastro01.pas' {Frame_Cadastro01: TFrame},
+  u_Frame_impressao in '..\Modulo Frame\u_Frame_impressao.pas' {Frame_Impressao: TFrame},
+  u_Frame_Recebimento in '..\Modulo Frame\u_Frame_Recebimento.pas' {Frame_Recebimento: TFrame},
+  U_CadUsuario in 'U_CadUsuario.pas' {Fr_CadUsuario},
+  U_Pes_Usuarios in 'U_Pes_Usuarios.pas' {Fr_Pes_Usuarios},
+  U_CadFuncionario in 'U_CadFuncionario.pas' {FrCadFuncionario},
+  U_CadEndereco in 'U_CadEndereco.pas' {Fr_CadEndereco},
+  U_Pes_Endereco in 'U_Pes_Endereco.pas' {Fr_Pes_Endereco},
+  U_Lanches in 'U_Lanches.pas' {Fr_Lanches},
+  U_Ingredientes in 'U_Ingredientes.pas' {Fr_Ingredientes};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.Title := 'Sistema de Lanchonete';
+  Application.CreateForm(TMODULE, MODULE);
+  Application.CreateForm(TMenu, Menu);
+  Application.Run;
+end.

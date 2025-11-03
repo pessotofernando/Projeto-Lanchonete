@@ -1,0 +1,477 @@
+unit u_valida;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics,controls,Forms,Dialogs,
+  StdCtrls, Mask,Math,Variants;
+
+Function valida_campo(campo,tip:string): boolean;
+
+Function TestaCgc(xCgc: string): Boolean;
+Function TestaCpf(xCpf: string): boolean;
+Function UltimoDiaDoMes( MesAno: string ): string;
+Function IdadeAtual(Nasc : TDate): Integer;
+function RetirarPonto(strSrc: string): string;
+function ObtemItemIndex(Lista:TComboBox; Item:String):String;
+function valida_data (dat:string):boolean;
+function Verifica_Periodo (datini:string;datfim:string):boolean;
+function Converte(Senha,Chave:String; Status:Boolean):String;
+function StrZero(Text: String; Num: Integer): String;
+function DiaSemana(Data: TDateTime): String;
+
+function TrocaVirgPPto(varValor: string): String;
+
+
+var
+paramentros : Array[1..20] of string;
+
+
+implementation
+
+function DiaSemana(Data: TDateTime): String;
+const
+    Dias : Array[1..7] of String[15] = ('Domingo', 'Segunda - Feira', 'Terça - Feira','Quarta - Feira','Quinta - Feira', 'Sexta - Feira','Sábado');
+begin
+   Result := Dias[DayOfWeek(Data)];
+end; 
+
+
+
+function TrocaVirgPPto(varValor: string): String;
+ var i:integer;
+begin
+  if varValor <> '' then
+  begin
+    for i := 0 to Length(varValor) do
+    begin
+     if varValor[i]=. then
+     begin
+       varValor[i]:=,;
+     end
+     else if varValor[i] = , then
+     begin
+       varValor[i]:=.;
+     end;
+   end;
+  end;
+  Result := varValor;
+end;
+
+
+
+Function TestaCgc(xCGC: string): Boolean;
+var
+  d1, d4, xx, nCount, fator, resto, digito1, digito2: Integer;
+  Check: string;
+begin
+   d1 := 0; d4 := 0; xx := 1;
+
+   for nCount := 1 to Length(xCGC) - 2 do
+   begin
+      if Pos(Copy(xCGC, nCount, 1), '/-.') = 0 then
+      begin
+         if xx < 5 then fator := 6 - xx
+         else           fator := 14 - xx;
+
+         d1 := d1 + StrToInt(Copy(xCGC, nCount, 1)) * fator;
+
+         if xx < 6 then fator := 7 - xx
+         else           fator := 15 - xx;
+
+         d4 := d4 + StrToInt(Copy(xCGC, nCount, 1)) * fator;
+         xx := xx + 1;
+      end;
+   end;
+
+   resto := (d1 mod 11);
+
+   if resto < 2 then digito1 := 0
+   else              digito1 := 11 - resto;
+
+   d4 := d4 + 2 * digito1;
+   resto := (d4 mod 11);
+
+   if resto < 2 then digito2 := 0
+   else              digito2 := 11 - resto;
+
+   Check := IntToStr(Digito1) + IntToStr(Digito2);
+
+   if Check <> copy(xCGC, succ(length(xCGC) - 2), 2) then Result := False
+   else                                                   Result := True;
+end;
+
+
+Function TestaCpf(xCpf: string): boolean;
+var
+
+  N: array[1..9] of Integer;
+  D: array[1..2] of Integer;
+  I: Integer;
+  digitado, calculado: string;
+
+begin
+
+
+
+      xCpf := copy(xCpf,1,3)+ copy(xCpf,5,3) + copy(xCpf,9,3) + copy(xCpf,13,2);
+
+
+      D[1]:=0;
+
+      for I:= 1 to 9 do
+      begin
+         N[I]:= StrToInt(xCpf[I]);
+         D[1]:= D[1]+(11-I)*N[I];
+      end;
+
+      D[1]:=11-(D[1] mod 11);
+      if D[1] >= 10 then D[1]:= 0;
+
+      D[2]:=0;
+
+      for I:= 1 to 9 do
+      begin
+         D[2]:= D[2]+(12-I)*N[I];
+      end;
+
+      D[2]:= D[2]+D[1]*2;
+      D[2]:=11-(D[2] mod 11);
+
+
+      if D[2] >= 10 then D[2]:= 0;
+
+      calculado:= IntToStr(D[1])+IntToStr(D[2]);
+      digitado:= xCpf[10]+xCpf[11];
+
+
+      if (calculado=digitado) then result := true
+      else                         result := false;
+   
+end;
+
+Function UltimoDiaDoMes( MesAno: string ): string;
+var
+  sMes: string;
+  sAno: string;
+begin
+
+   sMes := Copy( MesAno, 1, 2 );
+   sAno := Copy( MesAno, 4, 4 );
+
+   if Pos( sMes, '01 03 05 07 08 10 12' ) > 0 then   UltimoDiaDoMes := '31'
+   else
+   begin
+
+      if sMes <> '02' then   UltimoDiaDoMes := '30'
+      else
+      begin
+         if (sMes = '02') and (StrtoInt(sAno) mod 4 = 0) then UltimoDiaDoMes := '29'
+         else                                                 UltimoDiaDoMes := '28';
+      end;
+
+   end;
+end;
+
+
+function IdadeAtual(Nasc : TDate): Integer;
+  Var AuxIdade, Meses : String;
+      MesesFloat : Real;
+      IdadeInc, IdadeReal : Integer;
+begin
+
+  AuxIdade := Format('%0.2f', [(Date - Nasc) / 365.6]);
+  Meses := FloatToStr(Frac(StrToFloat(AuxIdade)));
+
+  if AuxIdade = '0' then
+  begin
+     Result := 0;
+     Exit;
+  end;
+
+  if Meses[1] = '-' then
+  begin
+     Meses := FloatToStr(StrToFloat(Meses) * -1);
+  end;
+
+  Delete(Meses, 1, 2);
+
+
+  if Length(Meses) = 1 then
+  begin
+     Meses := Meses + '0';
+  end;
+
+
+  if (Meses <> '0') And (Meses <> '') then
+  begin
+     MesesFloat := Round(((365.6 * StrToInt(Meses)) / 100) / 30.47)
+  end
+  else
+  begin
+     MesesFloat := 0;
+  end;
+
+
+  if MesesFloat <> 12 then
+  begin
+     IdadeReal := Trunc(StrToFloat(AuxIdade));
+  end
+  else
+  begin
+     IdadeInc := Trunc(StrToFloat(AuxIdade));
+     Inc(IdadeInc);
+     IdadeReal := IdadeInc;
+  end;
+
+  Result := IdadeReal;
+
+end;
+
+
+Function valida_campo(campo,tip:string): boolean;
+var
+   v_valor : integer;
+   v_campo : string;
+   v_float : Extended;
+begin
+
+   result := true;
+
+   if tip = 'I' then
+   begin
+      try
+         v_valor := strtoint(campo);
+      except
+         result := false;
+         exit;
+      end;
+   end;
+
+   if tip = 'T' then // nao aceita numeros menor ou igual a zero
+   begin
+      try
+         v_valor := strtoint(campo);
+
+         if v_valor <= 0 then
+         begin
+            result := false;
+            exit;
+         end;
+
+      except
+         result := false;
+         exit;
+      end;
+   end;
+
+   if tip = 'Z' then // nao aceita numeros menor que zero
+   begin
+      try
+         v_valor := strtoint(campo);
+
+         if v_valor < 0 then
+         begin
+            result := false;
+            exit;
+         end;
+
+      except
+         result := false;
+         exit;
+      end;
+   end;
+
+
+   if tip = 'C' then
+   begin
+      v_campo := trim(campo);
+
+      if v_campo = '' then result := false;
+   end;
+
+
+   if tip = 'F' then
+   begin
+      try
+         v_campo    := RetirarPonto(campo);
+         if v_campo  = '0' then exit;
+         v_float    := strtofloat(v_campo);
+      except
+         result := false;
+         exit;
+      end;
+   end;
+
+
+end;
+
+
+function valida_data (dat:string):boolean;
+begin
+
+   try
+     StrToDate(Dat);
+     Result := True;
+   except
+     Result := False;
+   end;
+
+end;
+
+
+
+
+function RetirarPonto(strSrc: string): string;
+var
+    StrAux: string;
+    i: integer;
+    FlagFim: boolean;
+begin
+    i := 1;
+    FlagFim := false;
+    StrAux  := StrSrc;
+    if StrSrc = '' then StrSrc := '0';
+
+    if strSrc = '0' then
+    begin
+       RetirarPonto := StrSrc;
+       exit;
+    end;
+
+    while (not FlagFim) do
+    begin
+       if StrAux[i] = '.' then
+       begin
+          Delete(StrAux, i, 1);
+       end
+       else
+       begin
+          i := i + 1;
+       end;
+
+       if i > length(StrAux) then flagFIm := true;
+
+    end;
+
+    RetirarPonto := StrAux;
+
+end;
+
+
+function ObtemItemIndex(Lista:TComboBox; Item:String):String;
+var
+ i:Integer;
+begin
+
+   for i:=0 to Lista.Items.Count-1 do
+   begin
+      if Lista.Items.Strings[i] = Item then
+      begin
+         Result := inttostr(i);
+         Exit;
+      end;
+   end;
+
+   Result:='';
+
+end;
+
+
+function Verifica_Periodo (datini:string;datfim:string):boolean;
+begin
+   result := true;
+
+   if StrToDate(Datini) > StrToDate(DatFim) then 
+   begin
+      result := false;
+   end;
+
+end;
+
+
+function Converte(Senha,Chave:String; Status:Boolean):String;
+var
+ x,y: Integer;
+ Hexa: String;
+
+ function HexDec(Letra: Char): Integer;
+ begin
+  case Letra of
+   'A': result:=10;
+   'B': result:=11;
+   'C': result:=12;
+   'D': result:=13;
+   'E': result:=14;
+   'F': result:=15;
+  else
+   result:=StrToInt(Letra);
+  end;
+ end;
+
+begin
+ if Status=True then
+  begin
+   x:=1;
+   y:=1;
+   Hexa:='';
+   while x<=Length(Senha) do
+    begin
+     Hexa:=Hexa+IntToHex(Ord(Senha[x])+Ord(Chave[y]),3);
+     inc(x);
+     inc(y);
+     if y>Length(Chave) then
+      y:=1;
+    end;
+   Result:=Hexa;
+  end
+ else
+  begin
+   x:=1;
+   y:=1;
+   while x<=Length(Senha) do
+    begin
+     Hexa:=Hexa+Chr((HexDec(Senha[x])*Trunc(Power(16,2))+HexDec(Senha[x+1])*Trunc(Power(16,1))+HexDec(Senha[x+2])*Trunc(Power(16,0)))-Ord(Chave[y]));
+     inc(x,3);
+     inc(y);
+     if y>Length(Chave) then
+      y:=1;
+    end;
+   Result:=Hexa;
+  end;
+end;
+
+
+function StrZero(Text: String; Num: Integer): String;
+Var
+  Cadeia : String;
+  Quant, i : integer;
+Begin
+  IF length(Text) < Num then
+  Begin
+    Quant:=(Num - length(Text));
+    For i:=1 to Quant do
+    Begin
+      Text:='0' + Text;
+    end;
+    Cadeia:=Text;
+  end
+  else
+  Begin
+    IF length(Text) = Num then
+    Begin
+      Cadeia := Text;
+    end
+    else
+    IF length(Text) > Num then Cadeia := Text;
+  end;
+Result := Cadeia;
+
+end;
+
+
+end.
+
+
+
+
