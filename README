@@ -1,0 +1,16 @@
+Passos para um bom funcionamento do Sistema
+
+Instalar o banco de dados MSSQL que se encontra dentro do projeto Usuário e senha do banco (Usuario "sa", senha "Master10") Nome do Banco "BANCO"
+
+Rodar todos os scripts do sistema que se encontra dentro da pasta "Script" alguns comandos já tem informações preenchidas
+
+usuário e senha de acesso ao sistema Existem dois logins configurados
+
+Usuário: "FX" Senha FOXCONN - Usuário Principal Usuário: "FT" Senha FOXCONN - Usuário Segundo
+
+Inclui um Documento do Word dentro do projeto para facilitar a demonstração do sistema
+
+-- Foi utilizado o RAD Studio 11(Delphi) Como linguagem de programação, Junto com o banco de dados SQL SERVER Express. 
+-- Foi desenvolvido em modelo extrutural 
+-- O modelo de megocio foi baseado em balcão de venda, onde o próprio usuário faz o lançamento do pedido. 
+-- Como não tinha as ferramentas para fazer o desenvolvimento do projeto foi necessário buscar na internet os softwares a serem utilizados
